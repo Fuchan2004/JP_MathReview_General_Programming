@@ -1,7 +1,8 @@
 # JP_MathReview_General_Programming
 This Github Repository was created for the General Programming class of the JP Summer Math Review. This class is based on the Environmental Bioinformatics class tought by Harriet Alexander, Maria Pachiadaki, and Carolyn Tepolt as well as on the course material compiled by Pad Poemnamthip.
 
-**Created by: Fadiem Stemmer, 2026/07/12**
+
+**Created by: Fadime Stemmer, 2026/07/12**
 
 ## Goals
 1. Github
