@@ -2,11 +2,12 @@
 This Github Repository was created for the General Programming class of the JP Summer Math Review. This class is based on the Environmental Bioinformatics class tought by Harriet Alexander, Maria Pachiadaki, and Carolyn Tepolt as well as on the course material compiled by Pad Poemnamthip.
 
 
-**Created by: Fadime Stemmer, 2026/07/12**
+*Created by: Fadime Stemmer, 2026/07/12*
 
 ## Goals
 1. Github
-2. Introduction to the HPC
+   * Setup Git on your local computer (or HPC)
+3. Introduction to the HPC
    * Open the terminal on our local machine
    * Test ocommands for navigating around our file structures via the command line
    * Introduction to HPC
@@ -18,30 +19,71 @@ This Github Repository was created for the General Programming class of the JP S
 
 ## 1. Github
 ### What is Git / GitHub?
-= software that helps you version control your code. GitHub is a platform that integrates with git and helps you collaborate with others.
+= software that helps you version control your code. GitHub is a platform that integrates with git and helps you collaborate with others. Be aware: 
 * Git is not an archival service
-* Git is not a good place to store data or data products (checkout Zenodo or OSF.io)
+* Git is not a good place to store data or data products (checkout Zenodo or OSF.io instead)
 
-## Set up your Git on your computer (or the HPC)
-First, we are going to share a public ssh key between your poseidon account and GitHub. To do this navigate to ~/.ssh/. Get the contents of the file to print to screen by typing:
+## Set up Git on your computer (or the HPC)
+First, we are going to share a public ssh key between your personal or HPC account and GitHub. 
+To do this navigate to ~/.ssh/ and get the contents of the public key file.
 
-`cat id_rsa.pub`
+```
+cd ~/.ssh/
+cat id_rsa.pub
+```
+If you do not have a public key file yet, you can create it as follows: 
 
-Select and copy the whole thing to your local clipboard.
+```
+ssh-keygen -t rsa -b 4096 -C "your_email_from_githubaccount@xyz.edu"
+```
+You will see a message similar to this: 
+```
+Generating public/private rsa key pair.
+Enter file in which to save the key: ~/.ssh/if_rsa
+Enter passphrase: [CHOOSE PASSWORD OR LEAVE EMPTY FOR NO PASSWORD]
+Enter same passphrase again: 
+Your identification has been saved in ~/.ssh/if_rsa
+Your public key has been saved in ~/.ssh/if_rsa.pub
+The key fingerprint is:
+SHA256:O1vxWxK7SnJaVFYsuCYmkg6YohXuIk9tOQZ5z0hWeu0 fstemmer@mit.edu
+The key's randomart image is:
++---[RSA 4096]----+
+|           . ..  |
+|  .   .   . ...  |
+| + o + .   .o.   |
+|+ * B o + oo     |
+|oo O B +Soo .    |
+|+ o O o Eo o o   |
+|.+ o .  + = + .  |
+|  .      X   =   |
+|        o ..o    |
++----[SHA256]-----+
+```
+Great! Your key is ready to go! Before we move on let's take an additional step to start the SSH agent and load your private key into it, so you don't have to type your key's passphrase every time you use SSH. Within the .ssh/ folder, type: 
 
-Now, we are going to provide this public ssh key to GitHub. Go here: https://github.com/settings/keys and click on Add new SSH key on the top left. Give the key a title that is informative for you (like poseidon) and paste your key into the key box. Now click Add SSH key at the bottom and you should be good to go!
+```
+# Start agent and connect shell
+eval "$(ssh-agent -s)"
+# Load your private key id_rsa to your running agent.
+ssh-add ~/.ssh/id_rsa
+```
 
-Now, switch back to terminal, we are going configure our GitHub information on poseidon. All git commands run as git and then the type of command you want to use. Here it will be config
+Finally, copy the ssh key to your clipboard, either by opening the id_rsa.pub file selecting and copying or with following command: 
+```
+pbcopy < ~/.ssh/id_rsa.pub
+```
+
+Now, we are going to provide this public ssh key to GitHub. Go [here](https://github.com/settings/keys) and click on "Add new SSH key" on the top right of the page. Give the key a title that is informative for you and paste your key into the key box. Now click "Add SSH key" at the bottom and you should be good to go!
+
+Now, switch back to terminal, we are going to configure our GitHub information on poseidon. All git commands run as git and then the type of command you want to use. Here it will be config
 
 git config --global user.name "Firstname Lastname" 
 git config --global user.email "email@youremail.com"
 git config --global core.editor "nano -w"
 
-Click this link: https://classroom.github.com/a/48DJYTQV. This link is going to take you to GitHub classroom and walk you through the creation of how to create a new repository (repo) that is specific to you. Here, you should be taken to a new repository called HW_assignment_0b within our group (2021-environmental-bioinformatics). Once you are there, click on the green Clone or download buttom at the top. This will lead to a drop down menu which provides the address for the repo. There are several options-- we want to choose SSH.
-
 Once you have copied the address switch back to your terminal window. Navigate to your user directory in posiedon: /vortexfs1/omics/env-bio/users/yourusername. We are now going to use the clone function of git. This is used to clone (or copy) repositories from GitHub to your local machine. Cloning is more than downloading as a zipped file as it will carry with it all the information and metadata that git needs to maintain version control. To clone we will type the command:
 
-`git clone [PASTE THE THING YOU COPIED]`
+`git clone [PASTE THE LINK YOU COPIED TO THIS REPOSITORY]`
 
 You can then hit enter and you should see some printout like this:
 ```
@@ -55,7 +97,7 @@ Receiving objects: 100% (256/256), 29.52 KiB | 0 bytes/s, done.
 
 If you now run `ls` you should see a new folder with the name of this repository. Go into this folder and type `ls -a`. The `-a` flag shows all files (including those that are hidden). Many programs create hidden files (files or folders that start with . to prevent users from messing with them).
 
-What do you see? You should see the homework assignment (README.md). The .md is markdown file which is a common and relatively easy to use formatting language. You can learn more about it here.
+What do you see? You should see the ex(README.md). The .md is markdown file which is a common and relatively easy to use formatting language. You can learn more about it here.
 
 You should also see a folder called sequences/ that has some data you will need in it. You will also see a .git/ folder. This folder contains all the history associated with this repo. Basically, anything that has been committed to GitHub's memory is encoded within the .git/ folder.
 
