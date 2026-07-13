@@ -213,15 +213,22 @@ cp paper-final.txt paper-v1.txt
 cp paper-final.txt paper-v2.txt
 cp paper-final.txt paper-v3.txt
 ```
-`cp` can also be used with directories. Try copying `extremely-old-drafts` to a new directory called v`ery-old-drafts`. What happened? For `cp` we need the flag `-r` to be able to copy directories including its contents. 
+`cp` can also be used with directories. Try copying `extremely-old-drafts` to a new directory called `very-old-drafts`. What happened? For `cp` we need the flag `-r` to be able to copy directories including its contents. 
+```
+cp -r extremely-old-drafts very-old-drafts
+```
 
 **Excercise**
+
 Write a single command to move `paper-v2.txt` to the directory `JP_MathReview_General_Programming/observations/` and rename it `initial-observations.txt`. Now, navigate to `JP_MathReview_General_Programming/observations/` and try copying `paper-v3.txt` to the location where you are without moving directories.
 
 #### Removing Things
-On the command line removal is permanent. Removing with the command `rm` just as cp and mv can take a target file or a list of more than file. So, for example rm paper-v1.txt removes paper-v1.txt. If you run ls again you will note that it is gone. And it is truly gone. Short of having backed things up-- there is no way to get a rm-ed file back. A flag that I like to add (or have aliased) is `rm -i` for interactive. Let's try `rm -i` to remove paper-v2.txt.
+On the command line removal is permanent. Removing with the command `rm` just as `cp` and `mv` can take a target file or a list of more than file. So, for example `rm paper-v1.txt` removes `paper-v1.txt`. If you run `ls` again you will note that it is gone. And it is truly gone. Short of having backed things up there is no way to get a rm-ed file back. A flag that I like to add (or have aliased) is `rm -i` for interactive. Let's try `rm -i` to remove `paper-v2.txt`.
+```
+rm -i paper-v2.txt
+```
 
-The danger zone: You can also use rm to remove directories and this is where you really need to be careful. Using the flag `rm -r` will recursively remove *all files within a directory*. I strongly suggest (especially if you are new the the command line) using the -i flag. Note: `rmdir` is another option for removing directories -- the default requires that the directory be empty.
+The danger zone: You can also use `rm` to remove directories and this is where you really need to be careful. Using the flag `rm -r` will recursively remove *all files within a directory*. I strongly suggest (especially if you are new the the command line) using the `-i` flag. Note: `rmdir` is another option for removing directories the default requires that the directory be empty.
 
 #### Outputs & string commands things together
 The real power of shell comes from our ability to string commands together to do something greater.
