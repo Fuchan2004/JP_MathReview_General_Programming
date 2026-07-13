@@ -537,7 +537,7 @@ Ultimately, the thing that makes shell so powerful is your ability to save thing
 
 Here are some ready made scripts that we are going to take a look at. First type ls -l. You should see that all of these scripts are executable.
 
-Let's take a look at `hello.sh`.
+Let's take a look at `hello.sh`. It starts with a line called the 'shebang'. A shebang (also called a "hashbang") is the special first line of a script that tells the operating system which interpreter to use to run the rest of the file. Here the interpreter is bash.
 
 As you can see it is pretty straight forward. This is a file that contains one command `echo Hello, world.` to the screen.
 
@@ -558,11 +558,23 @@ bash hello.sh [your name]
 What is the output of the above?
 
 **Exercise**
-Lets create a new bash script in the scripts folder called `tenth_sequence.sh`. Copy the for loop from earlier that gave us the 10th sequence in a fasta file as output into the script. Modify it to output the 10th sequence from all `*.fasta` files in an input directory (should be $1). Run the script:
+Lets create a new bash script in the scripts folder called `tenth_sequence.sh`. Copy the `for loop` from earlier that gave us the 10th sequence in a fasta file as output into the script. Modify it to output the 10th sequence from all `*.fasta` files in an input directory (should be `$1`). Run the script:
 
 ```
 bash tenth_sequence.sh ../fasta/
 ```
+
+*Solution*:
+
+```
+#!/bin/bash
+
+for sequence in "$1"/*.fasta
+do
+	grep '>' "${sequence}"| head -n 10 | tail -n 1 >> tenth_sequence.txt
+done
+```
+
 
 ### Submitting jobs using slurm scripts and sbatch
 In the `poseidon_codes` folder you will find two MATLAB scripts called `hello_world.m` and `Testplot_20260713.m`. We will submit these scripts and run them using a compute node without the bash interface using slurm. Slurm is the job scheduler used on the HPC. To run any job on the HPC, we have to submit it via slurm and wait in the queuing system. The nice thing about this is that the job will not be interrupted even if you lose connection to the HPC. 
@@ -600,5 +612,6 @@ squeue -u <username>
 ```
 
 **Exercise**
+
 Open the `Testplot_20260713.m`. Read it through, change the function and output filename to your desired filename. Save and exit the file.
 Open `job.slurm` and edit the command to run this matlab script. Save and exit. Then submit the job and check for the results. How can we get the output files onto our local computer? 
