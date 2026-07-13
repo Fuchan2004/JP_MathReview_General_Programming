@@ -174,7 +174,7 @@ This should bring you into an interface where you can read and scroll but cannot
 
 Another convenient way to examine the content of a file is to print it to the screen or print it to stdout or Standard Output. The program `cat` or concatenate will print the entire contents of a file to the screen. Try it out by typing:
 ```
-cat `2026-observation.txt`
+cat 2026-observation.txt
 ```
 How is this different than less?
 
@@ -182,7 +182,7 @@ How is this different than less?
 One of the most common things you will likely find yourself doing is managing and reorganizing files in your projects. Let's go to the folder `papers` we downloaded and unzipepd earlier. Here we have many different versions of a paper that we are struggling to write.
 
 Let's make a new directory called `old-drafts` inside the `papers` directory. We are going to use the command `mv` (move) to move files on the command line. 
-mv takes two arguments:
+`mv` takes two arguments:
 * Argument 1: target file that you want to move
 * Argument 2: destination or the location that you want to move it to.
 
