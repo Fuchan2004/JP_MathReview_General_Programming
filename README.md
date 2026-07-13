@@ -5,155 +5,18 @@ This Github Repository was created for the General Programming class of the JP S
 *Created by: Fadime Stemmer, 2026/07/12*
 
 ## Goals
-1. Github
-   * Setup Git on your local computer (or HPC)
-   * Git commands - how to set up and work on a (collaborative) project
-3. Introduction to the HPC
+1. The Unix Shell Intro
+   * Wildcards and regex
+   * Outputs & string commands together
+   * Writing scripts, slurm, sbatch
+2. Introduction to the HPC
    * Open the terminal on our local machine
    * Test ocommands for navigating around our file structures via the command line
    * Introduction to HPC
    * Remote machine access (ssh) and log on to the HPC
-4. Scripting 
-   * Wildcards and regex
-   * Outputs & string commands together
-   * Writing scripts, slurm, sbatch
-
-## 1. Github
-### What is Git / GitHub?
-= software that helps you version control your code. GitHub is a platform that integrates with git and helps you collaborate with others. Be aware: 
-* Git is not an archival service
-* Git is not a good place to store data or data products (checkout Zenodo or OSF.io instead)
-
-### Set up Git on your computer (or the HPC)
-First, we are going to share a public ssh key between your personal or HPC account and GitHub. 
-To do this navigate to ~/.ssh/ and get the contents of the public key file.
-
-```
-cd ~/.ssh/
-cat id_rsa.pub
-```
-If you do not have a public key file yet, you can create it as follows: 
-
-```
-ssh-keygen -t rsa -b 4096 -C "your_email_from_githubaccount@xyz.edu"
-```
-You will see a message similar to this: 
-```
-Generating public/private rsa key pair.
-Enter file in which to save the key: ~/.ssh/if_rsa
-Enter passphrase: [CHOOSE PASSWORD OR LEAVE EMPTY FOR NO PASSWORD]
-Enter same passphrase again: 
-Your identification has been saved in ~/.ssh/if_rsa
-Your public key has been saved in ~/.ssh/if_rsa.pub
-The key fingerprint is:
-SHA256:O1vxWxK7SnJaVFYsuCYmkg6YohXuIk9tOQZ5z0hWeu0 fstemmer@mit.edu
-The key's randomart image is:
-+---[RSA 4096]----+
-|           . ..  |
-|  .   .   . ...  |
-| + o + .   .o.   |
-|+ * B o + oo     |
-|oo O B +Soo .    |
-|+ o O o Eo o o   |
-|.+ o .  + = + .  |
-|  .      X   =   |
-|        o ..o    |
-+----[SHA256]-----+
-```
-Great! Your key is ready to go! Before we move on let's take an additional step to start the SSH agent and load your private key into it, so you don't have to type your key's passphrase every time you use SSH. Within the .ssh/ folder, type: 
-
-```
-# Start agent and connect shell
-eval "$(ssh-agent -s)"
-# Load your private key id_rsa to your running agent.
-ssh-add ~/.ssh/id_rsa
-```
-
-Finally, copy the ssh key to your clipboard, either by opening the id_rsa.pub file selecting and copying or with following command: 
-```
-pbcopy < ~/.ssh/id_rsa.pub
-```
-
-Now, we are going to provide this public ssh key to GitHub. Go [here](https://github.com/settings/keys) and click on "Add new SSH key" on the top right of the page. Give the key a title that is informative for you and paste your key into the key box. Now click "Add SSH key" at the bottom and you should be good to go!
-
-### Git commands - how to set up and work on a (collaborative) project
-Github is a great platform for working on code both individually or collaboratively. I usually create a repository for each project / paper I work on. To do that visit Github -> Repositories -> New. Select your settings (I recommend working in private mode and then setting to public once you're ready to publish) and click create. Congratualtions, you created your first github repository! 
-
-For now we will work with the JP Math Review repository. Lets copy it to our local computer using the command `git clone`. This is used to clone (or copy) repositories from GitHub to your local machine. Cloning is more than downloading as a zipped file as it will carry with it all the information and metadata that git needs to maintain version control.
-1. Navigate to the repository you'd like to clone, click the green code box, select SSH, and copy the link.
-2. Switch back to your terminal window.
-3. Navigate to the directory you would like to copy this folder into.
-4. To clone we will type the command:
-
-```
-git clone [PASTE THE LINK YOU COPIED]
-```
-
-5. You can then hit enter and you should see some printout like this:
-
-```
-Cloning into 'REPO NAME'...
-remote: Enumerating objects: 256, done.
-remote: Counting objects: 100% (256/256), done.
-remote: Compressing objects: 100% (40/40), done.
-remote: Total 256 (delta 0), reused 256 (delta 0), pack-reused 0
-Receiving objects: 100% (256/256), 29.52 KiB | 0 bytes/s, done.
-```
-
-If you now run `ls` you should see a new folder with the name of this repository. Go into this folder and type `ls -a`. The `-a` flag shows all files (including those that are hidden). Many programs create hidden files (files or folders that start with . to prevent users from messing with them).
-
-* You should see the README.md. The .md is markdown file which is a common and relatively easy to use formatting language. You can learn more about it [here](https://guides.github.com/features/mastering-markdown/).
-* You will also see a .git/ folder. This folder contains all the history associated with this repo. Basically, anything that has been committed to GitHub's memory is encoded within the .git/ folder.
-
-After a git has been initiated (either via `git init` or `git clone`, as done here) you can start adding files to be tracked. First off, we have our local repo. Fundamentally, git does not automatically track any files. Files within your working directory are not being followed by git.
-
-Let's make a new file in our directory called temp. Using nano write something in temp, save and then quit out of nano.
-
-<img width="2358" height="1493" alt="image" src="https://github.com/user-attachments/assets/dc7b145a-d982-47cc-a0e1-c2acbf86e019" />
-
-To check the status of what files are being followed we can use the command `git status`. This tells us what files are being followed, which aren't, and which have been changed. We can see at the bottom that temp is listed as a file that isn't being tracked. To tell git that you want it to follow a file and move it from the working directory to the staging area you use the command:
-```git add temp```
-
-Now run `git status` again. What changed?
-
-Git isn't really tracking this file yet. To finalize our changes we need to commit them. This will take our temp file that is in the staging area and commit the changes moving it into our local repo. These changes are now remembered by git.
-
-```
-git commit
-```
-You will be prompted to enter a commit message. Type something in, then save and exit the text editor. Your commit message should be something that helps you remember what you did. Its a great way to version control your code and find specific changes. 
-
-Type `git status` again and see what has changed.
-
-Now, what if we make a change to temp. Use nano to add some text to temp.
-
-What happens when you type `git status`?
-
-As you can see it says that temp is tracked-- but it isn't staged staged. In order to stage the file you have to run `git add` and `git commit` again.
-
-Linking local Git to a remote (like GitHub)
-What if we now wanted to share our changes that we made on our local repo with a remote system like GitHub? There are three main ways of interacting with the remote:
-* `git clone`: we already used this. This will copy a version of the repo to your local system.
-* `git pull`: copies changes from a remote repository to a local repository.
-* `git push`: copies changes from a local repository to a remote repository.
-
-We have all made some changes to our local repositories. Let's try pushing them to the remote. Generally, it is good practice (and can save you a lot of trouble such as losing files) to run `git pull` first just in case there have been any changes. This will help you avoid conflicts between the local and remote repository.
-
-Run `git status`. You can see we are on our `main` branch. Main is the name of the remote repository. By convention, the local is typically called `origin`. So, to push our current commits to main we will type:
-
-```
-git push origin main
-```
-
-Go and take a look at your remote-- you should see that the file temp has been added to your online repository.
-
-A parting thought on Git
-Starting out with git can be a bit overwhelming at times. It is easy to mess up your repo or the like.
-
-Two common problems:
-- Accidentally adding files that are over the 100 MB size limit and trying to push them to GitHub.
-- Conflicting pushes: if you made any changes to your remote Git and forgot while trying to push your local. Thus, always try to pull and then push.
-And honestly, sometimes you just need to start over. Re-clone, move files around, pull and push. However, the simple fact that you can re-download a version of your project from the internet is very powerful!
+3. Github
+   * Setup Git on your local computer (or HPC)
+   * Git commands - how to set up and work on a (collaborative) project
 
 ## 2. Introduction to the HPC
 ### Logging on to the HPC
@@ -176,6 +39,7 @@ Host 'poseidon.whoi.edu' added to the list of known hosts.
       [usernames]'s password:
 Once you type the correct password you should see something like the following:
 
+```
   ___             _    _             ___ _         _           
  | _ \___ ___ ___(_)__| |___ _ _    / __| |_  _ __| |_ ___ _ _ 
  |  _/ _ (_-</ -_) / _` / _ \ ' \  | (__| | || (_-<  _/ -_) '_|
@@ -186,6 +50,8 @@ Welcome to the Poseidon Cluster at WHOI!
 Please remember to copy your files to scratch and move/delete them after each job.
 Please do not run anything on the login nodes and submit jobs to SLURM. All running 
 jobs/processes on the login nodes will be terminated without notice.
+```
+
 Congratulations! You have logged on to the HPC! This terminal now represents the environment of the remote computer that you just logged on to.
 
 Look at your prompt. Has it changed? What information do you see now? What do the different parts mean? Hint: try using the command whoami and the command hostname.
@@ -505,3 +371,141 @@ find . -type d
 Find can also be used to find files that match a certain name:
 
 find . -name *.txt
+
+
+## 3. Github
+### What is Git / GitHub?
+= software that helps you version control your code. GitHub is a platform that integrates with git and helps you collaborate with others. Be aware: 
+* Git is not an archival service
+* Git is not a good place to store data or data products (checkout Zenodo or OSF.io instead)
+
+### Set up Git on your computer (or the HPC)
+First, we are going to share a public ssh key between your personal or HPC account and GitHub. 
+To do this navigate to ~/.ssh/ and get the contents of the public key file.
+
+```
+cd ~/.ssh/
+cat id_rsa.pub
+```
+If you do not have a public key file yet, you can create it as follows: 
+
+```
+ssh-keygen -t rsa -b 4096 -C "your_email_from_githubaccount@xyz.edu"
+```
+You will see a message similar to this: 
+```
+Generating public/private rsa key pair.
+Enter file in which to save the key: ~/.ssh/if_rsa
+Enter passphrase: [CHOOSE PASSWORD OR LEAVE EMPTY FOR NO PASSWORD]
+Enter same passphrase again: 
+Your identification has been saved in ~/.ssh/if_rsa
+Your public key has been saved in ~/.ssh/if_rsa.pub
+The key fingerprint is:
+SHA256:O1vxWxK7SnJaVFYsuCYmkg6YohXuIk9tOQZ5z0hWeu0 fstemmer@mit.edu
+The key's randomart image is:
++---[RSA 4096]----+
+|           . ..  |
+|  .   .   . ...  |
+| + o + .   .o.   |
+|+ * B o + oo     |
+|oo O B +Soo .    |
+|+ o O o Eo o o   |
+|.+ o .  + = + .  |
+|  .      X   =   |
+|        o ..o    |
++----[SHA256]-----+
+```
+Great! Your key is ready to go! Before we move on let's take an additional step to start the SSH agent and load your private key into it, so you don't have to type your key's passphrase every time you use SSH. Within the .ssh/ folder, type: 
+
+```
+# Start agent and connect shell
+eval "$(ssh-agent -s)"
+# Load your private key id_rsa to your running agent.
+ssh-add ~/.ssh/id_rsa
+```
+
+Finally, copy the ssh key to your clipboard, either by opening the id_rsa.pub file selecting and copying or with following command: 
+```
+pbcopy < ~/.ssh/id_rsa.pub
+```
+
+Now, we are going to provide this public ssh key to GitHub. Go [here](https://github.com/settings/keys) and click on "Add new SSH key" on the top right of the page. Give the key a title that is informative for you and paste your key into the key box. Now click "Add SSH key" at the bottom and you should be good to go!
+
+### Git commands - how to set up and work on a (collaborative) project
+Github is a great platform for working on code both individually or collaboratively. I usually create a repository for each project / paper I work on. To do that visit Github -> Repositories -> New. Select your settings (I recommend working in private mode and then setting to public once you're ready to publish) and click create. Congratualtions, you created your first github repository! 
+
+For now we will work with the JP Math Review repository. Lets copy it to our local computer using the command `git clone`. This is used to clone (or copy) repositories from GitHub to your local machine. Cloning is more than downloading as a zipped file as it will carry with it all the information and metadata that git needs to maintain version control.
+1. Navigate to the repository you'd like to clone, click the green code box, select SSH, and copy the link.
+2. Switch back to your terminal window.
+3. Navigate to the directory you would like to copy this folder into.
+4. To clone we will type the command:
+
+```
+git clone [PASTE THE LINK YOU COPIED]
+```
+
+5. You can then hit enter and you should see some printout like this:
+
+```
+Cloning into 'REPO NAME'...
+remote: Enumerating objects: 256, done.
+remote: Counting objects: 100% (256/256), done.
+remote: Compressing objects: 100% (40/40), done.
+remote: Total 256 (delta 0), reused 256 (delta 0), pack-reused 0
+Receiving objects: 100% (256/256), 29.52 KiB | 0 bytes/s, done.
+```
+
+If you now run `ls` you should see a new folder with the name of this repository. Go into this folder and type `ls -a`. The `-a` flag shows all files (including those that are hidden). Many programs create hidden files (files or folders that start with . to prevent users from messing with them).
+
+* You should see the README.md. The .md is markdown file which is a common and relatively easy to use formatting language. You can learn more about it [here](https://guides.github.com/features/mastering-markdown/).
+* You will also see a .git/ folder. This folder contains all the history associated with this repo. Basically, anything that has been committed to GitHub's memory is encoded within the .git/ folder.
+
+After a git has been initiated (either via `git init` or `git clone`, as done here) you can start adding files to be tracked. First off, we have our local repo. Fundamentally, git does not automatically track any files. Files within your working directory are not being followed by git.
+
+Let's make a new file in our directory called temp. Using nano write something in temp, save and then quit out of nano.
+
+<img width="2358" height="1493" alt="image" src="https://github.com/user-attachments/assets/dc7b145a-d982-47cc-a0e1-c2acbf86e019" />
+
+To check the status of what files are being followed we can use the command `git status`. This tells us what files are being followed, which aren't, and which have been changed. We can see at the bottom that temp is listed as a file that isn't being tracked. To tell git that you want it to follow a file and move it from the working directory to the staging area you use the command:
+```git add temp```
+
+Now run `git status` again. What changed?
+
+Git isn't really tracking this file yet. To finalize our changes we need to commit them. This will take our temp file that is in the staging area and commit the changes moving it into our local repo. These changes are now remembered by git.
+
+```
+git commit
+```
+You will be prompted to enter a commit message. Type something in, then save and exit the text editor. Your commit message should be something that helps you remember what you did. Its a great way to version control your code and find specific changes. 
+
+Type `git status` again and see what has changed.
+
+Now, what if we make a change to temp. Use nano to add some text to temp.
+
+What happens when you type `git status`?
+
+As you can see it says that temp is tracked-- but it isn't staged staged. In order to stage the file you have to run `git add` and `git commit` again.
+
+Linking local Git to a remote (like GitHub)
+What if we now wanted to share our changes that we made on our local repo with a remote system like GitHub? There are three main ways of interacting with the remote:
+* `git clone`: we already used this. This will copy a version of the repo to your local system.
+* `git pull`: copies changes from a remote repository to a local repository.
+* `git push`: copies changes from a local repository to a remote repository.
+
+We have all made some changes to our local repositories. Let's try pushing them to the remote. Generally, it is good practice (and can save you a lot of trouble such as losing files) to run `git pull` first just in case there have been any changes. This will help you avoid conflicts between the local and remote repository.
+
+Run `git status`. You can see we are on our `main` branch. Main is the name of the remote repository. By convention, the local is typically called `origin`. So, to push our current commits to main we will type:
+
+```
+git push origin main
+```
+
+Go and take a look at your remote-- you should see that the file temp has been added to your online repository.
+
+A parting thought on Git
+Starting out with git can be a bit overwhelming at times. It is easy to mess up your repo or the like.
+
+Two common problems:
+- Accidentally adding files that are over the 100 MB size limit and trying to push them to GitHub.
+- Conflicting pushes: if you made any changes to your remote Git and forgot while trying to push your local. Thus, always try to pull and then push.
+And honestly, sometimes you just need to start over. Re-clone, move files around, pull and push. However, the simple fact that you can re-download a version of your project from the internet is very powerful!
