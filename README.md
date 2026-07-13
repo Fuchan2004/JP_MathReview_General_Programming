@@ -196,17 +196,15 @@ The command mv can also be used to rename files. Let's rename `paper-final2.txt`
 ```
 mv paper-final2.txt paper-DONE.txt
 ```
-Run ls. What has happened?
+Run `ls`. What has happened?
 
-mv can also be used with directories. For example, you can change the name of the directory `old-drafts` to `extremely-old-drafts`. Try it out! 
+`mv` can also be used with directories. For example, you can change the name of the directory `old-drafts` to `extremely-old-drafts`. Try it out! 
 
 **A word of caution:** You can very easily overwrite files using mv. Let's check this out. What happens if you run:
 ```
 mv paper-v4.txt paper-v3.txt
 ```
 Do you have the same number of files?
-**Excercise**
-Write a single command to move paper-v2.txt to the directory unix-folders-master/observations/ and rename it initial-observations. Now, navigate to unix-folders-master/observations/ and try copying paper-v3.txt to the location where you are without moving.
 
 #### Copying
 The command `cp` (copy) works very similarly to mv. As with mv it requires two arguments (the target file you want to copy and the destination/name of the new file). Let's try to create the files that we had previously by copying our final drafts.
@@ -216,6 +214,9 @@ cp paper-final.txt paper-v2.txt
 cp paper-final.txt paper-v3.txt
 ```
 cp can also be used with directories. Try copying extremely-old-drafts to a new directory called very-old-drafts. What happened? For cp we need the flag `-r` to be able to copy directories including its contents. 
+
+**Excercise**
+Write a single command to move `paper-v2.txt` to the directory `JP_MathReview_General_Programming/observations/` and rename it `initial-observations.txt`. Now, navigate to `JP_MathReview_General_Programming/observations/` and try copying `paper-v3.txt` to the location where you are without moving directories.
 
 #### Removing Things
 On the command line removal is permanent. Removing with the command `rm` just as cp and mv can take a target file or a list of more than file. So, for example rm paper-v1.txt removes paper-v1.txt. If you run ls again you will note that it is gone. And it is truly gone. Short of having backed things up-- there is no way to get a rm-ed file back. A flag that I like to add (or have aliased) is `rm -i` for interactive. Let's try `rm -i` to remove paper-v2.txt.
