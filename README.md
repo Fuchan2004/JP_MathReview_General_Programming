@@ -56,13 +56,18 @@ pwd
 ```
 Lets make a directory on your current working directory called `math_review_2026` using the command `mkdir`. Then list your working directory again. Can you find the directory we just created? 
 ```
-mkdir math_review_2026
+mkdir mathreview2026
 ```
 
 If you want to change the working directory, use the command `cd` which means change directory. 
 ```
-cd math_review_2026
+cd mathreview2026
 ```
+Useful arguments to navigate: 
+* `./`: Indicates your current working directory
+* `../`: Indicates one directory up
+* `~`: Indicates the home directory (the uppermost directory)
+
 There are many more useful commands to learn and navigate in unix shell. I highly recommend [this software carpentries tutorial](https://swcarpentry.github.io/shell-novice/index.html) that walks you through basic operations, loops, writing scripts etc. in detail. 
 
 ## 2. Introduction to the HPC
@@ -71,14 +76,21 @@ This is a remote cluster of computers (it isn't really that remote.. it is in th
 
 Today we will be using ssh to log onto poseidon.whoi.edu. To do this you will need to know what your WHOI username is and be within WHOI's firewall either by connecting to the local network (e.g. eduroam) or by logging into WHOI's vpn.
 
-Once you are logged on to WHOI's network you should be ready to ssh. In your terminal prompt type the following:
+Once you are logged on to WHOI's network you should be ready to ssh. You can do that using the `ssh` command with your username@poseidon.whoi.edu like here: 
 ```
-ssh username@poseidon-l1.whoi.edu
+ssh <username>@poseidon.whoi.edu
 ```
-If this is your first time logging onto the network you will see a prompt like the following:
+Poseidon has 2 login nodes: l1 and l2. We can select which node we would like to login. (Normally it's not needed, but in some case it might.)
+```
+ssh <username>@poseidon-l1.whoi.edu
+ssh <username>@poseidon-l2.whoi.edu
+```
 
+If this is your first time logging onto the network you will see a prompt like the following:
+```
 	Host key not found from the list of known hosts.
-	Are you sure you want to continue connecting (yes/no)? 
+	Are you sure you want to continue connecting (yes/no)?
+```
 This is a safety protocol ensuring that you do indeed want to add this address to a list of known hosts. Type `yes`.
 
 You should now be prompted for your password (this will be your WHOI email password):
@@ -101,7 +113,7 @@ Please do not run anything on the login nodes and submit jobs to SLURM. All runn
 jobs/processes on the login nodes will be terminated without notice.
 ```
 
-Congratulations! You have logged on to the HPC! This terminal now represents the environment of the remote computer that you just logged on to.
+**Congratulations! You have logged on to the HPC! This terminal now represents the environment of the remote computer that you just logged on to.**
 
 Look at your prompt. Has it changed? What information do you see now? What do the different parts mean? 
 Hint: try using the command `whoami` and the command `hostname`.
@@ -113,12 +125,13 @@ When you login to poseidon/hydra you will land in your personal directory. If yo
 ls 
 ```
 
-Unlike your local computer where you have the option of unavigating through your computer's GUI file navigator (Finder or the like), on the HPC you DO NOT have access to any sort of GUI and you must do everything via the CLI. 
+Unlike your local computer where you have the option of navigating through your computer's GUI file navigator (Finder or the like), on the HPC you DO NOT have access to any sort of GUI and you must do everything via the CLI. 
 
-First, lets download a test folder from the class GitHub repository using the `wget` command. Then unzip the file. You can use the `unzip` command:
+First, lets create a folder called `mathreview2026` on the HPC. How do we do that? 
+Then navigate **into** the newly created folder. Download a test folder from the class GitHub repository using the `wget` command. Then unzip the file. You can use the `unzip` command:
 ```
-wget https://github.com/Fuchan2004/JP_MathReview_General_Programming/test.zip
-unzip test.zip
+wget https://github.com/Fuchan2004/JP_MathReview_General_Programming/papers.zip
+unzip papers.zip
 ```
 Lets list the contents of our test directory using the `ls` command. Alternatively you can use `ll` (for long list) or explore some flags. These I find useful:  `ls -ltrh`
 ```
@@ -130,57 +143,65 @@ What do you see?
 Tip: If you are typing out the path rather than copying it, try hitting the tab key in the middle of the word or phrase, this should automatically complete the phrase for you or if there is more than one option repeatedly hitting tab will bring up a listing of all options.
 
 ### Working with files and directories
-Now, navigate **into** the newly created folder. You can do that using the `cd` command. How can you tell if a listing is a folder?
-Run the command to list the contents of the folder (ls with modifications maybe?). How many directories are there in this level?
-
-#### Creating directories
-Now, let's navigate back to. In this directory we are going to make a new directory called observations.
+#### Creating directories and files
+Now, let's navigate back to our `mathreview2026` folder. In this directory we are going to make a new directory called observations.
 ```
 mkdir observations
 ```
-
-Run ls -F again. What has changed since the first time? Try running ls -F observations. What do you see?
-
 Since we just made observations there is nothing inside of it-- let's change that!
 
-#### Creating a file
-Move into the directory observations and let's create a file. There are (unsurprisingly) many ways to do this. For now, let's use a text editor. During this class we will be using `nano` as it one of the easiest to learn. There are many other more powerful command line text editors (e.g. `vim`, `emacs`, etc.). If you are comfortable with one of those feel free to use it-- otherwise stick with nano.
+Move into the directory observations and let's create a file. There are many ways to do this. For now, let's use a text editor. Here we will be using `nano` as it one of the easiest to learn. There are many other more powerful command line text editors (e.g. `vim`, `emacs`, etc.). If you are comfortable with one of those feel free to use it-- otherwise stick with nano.
 
 To create a new text file simply type `nano [name of file]`. For example: 
 ```
-nano 2023-observation.txt
+nano 2026-observation.txt
 ```
-This will create a new file called 2023-observation.txt and you should be automatically be entered into the nano environment. Add some text to the file. And then press ctrl+O. This will write the text to the output file. Once you are satisfied you can press ctrl+X to exit. Note that the bottom of the nano window lists other ctrl commands that you might want to use with the program.
+This will create a new file called `2026-observation.txt` and you should be automatically be entered into the nano environment. Add some text to the file. And then press `ctrl+O`. This will write the text to the output file. Once you are satisfied you can press `ctrl+X` to exit. Note that the bottom of the nano window lists other ctrl commands that you might want to use with the program.
 
 #### Looking at files (without editing them)
-Often we want to get a quick look at the contents of a file without potentially accidentally modifying it. For that, the command `less` is quite useful. Try typing less 2023-observation.txt. This should bring you into an interface where you can read and scroll but cannot edit the document. Type `q` to exit. Take a look at both files in this directory.
+Often we want to get a quick look at the contents of a file without potentially accidentally modifying it. For that, the command `less` is quite useful. 
+```
+less 2026-observation.txt
+```
+This should bring you into an interface where you can read and scroll but cannot edit the document. Type `q` to exit.
 
 Another convenient way to examine the content of a file is to print it to the screen or print it to stdout or Standard Output. The program `cat` or concatenate will print the entire contents of a file to the screen. Try it out by typing:
 ```
-cat `2023-observations.txt`
+cat `2026-observation.txt`
 ```
 How is this different than less?
 
 #### Moving and renaming
-One of the most common things you will likely find yourself doing is managing and reorganizing files in your projects. Let's go to the folder called unix-folders-master/writing/drafts/. Here we have many different versions of a paper that we are struggling to write.
+One of the most common things you will likely find yourself doing is managing and reorganizing files in your projects. Let's go to the folder `papers` we downloaded and unzipepd earlier. Here we have many different versions of a paper that we are struggling to write.
 
-First, let's make a new directory called old-drafts. We are going to use the command mv (move) to move files on the command line. mv takes two arguments: the first is the target file that you want to move, the second is destination or the location that you want to move it to. Let's move paper-v1.txt into old-drafts/.
+Let's make a new directory called `old-drafts` inside the `papers` directory. We are going to use the command `mv` (move) to move files on the command line. 
+mv takes two arguments:
+* Argument 1: target file that you want to move
+* Argument 2: destination or the location that you want to move it to.
 
-The command mv can also be used to rename files. Let's rename paper-final2.txt to paper-DONE.txt. To do this, your destination is the new name of the file.
+Let's move `paper-v1.txt` into `old-drafts/`: 
 
+```
+
+```
+
+The command mv can also be used to rename files. Let's rename `paper-final2.txt` to `paper-DONE.txt`. To do this, your destination is the new name of the file.
+```
 mv paper-final2.txt paper-DONE.txt
+```
 Run ls. What has happened?
 
-mv can also be used with directories. For example, you can change the name of the directory old-drafts to extremely-old-drafts.
+mv can also be used with directories. For example, you can change the name of the directory `old-drafts` to `extremely-old-drafts`. Try it out! 
 
-**A word of caution: ** You can very easily overwrite files using mv. Let's check this out. What happens if you run:
-
+**A word of caution:** You can very easily overwrite files using mv. Let's check this out. What happens if you run:
+```
 mv paper-v4.txt paper-v3.txt
+```
 Do you have the same number of files?
 
 Write a single command to move paper-v2.txt to the directory unix-folders-master/observations/ and rename it initial-observations. Now, navigate to unix-folders-master/observations/ and try copying paper-v3.txt to the location where you are without moving.
 
-Copying
+#### Copying
 The command cp (copy) works very similarly to mv. As with mv it requires two commands (the target file you want to copy and the destination/name of the new file). Return to unix-folders-master/writing/drafts/. Let's try to create the files that we had previously by copying our final drafts.
 
 cp paper-final.txt paper-v1.txt
@@ -188,7 +209,7 @@ cp paper-final.txt paper-v2.txt
 cp paper-final.txt paper-v3.txt
 cp can also be used with directories. Try copying extremely-old-drafts to a new directory called very-old-drafts. What happened? Use man to figure out if there is a flag that can help you.
 
-Transfering files and folders from your local computer to HPC
+#### Transfering files and folders from your local computer to HPC
 Navigate back to unix-folders-master/ and make a folder called creatures_dat. We are going to use the scp command to securely copy files and directories between remote hosts without starting an FTP session or logging into the remote systems explicitly. The scp command uses SSH to transfer data, so it requires a password or passphrase for authentication. Unlike rcp or FTP, scp encrypts both the file and any passwords exchanged so that anyone snooping on the network cannot view them. We are going to transfer all sequence files (ending in .dat) from your shell-lesson-data/exercise-data/creatures (should be in your Desktop) to your newly constructed folder creatures_dat
 
 Open a new local terminal
@@ -201,8 +222,7 @@ On the command line... removal is permanent. Removing with the command rm just a
 
 The danger zone: You can also use rm to remove directories and this is where you really need to be careful. Using the flag rm -r will recursively remove all files within a directory. I strongly suggest (especially if you are new the the command line) using the -i flag. Note: rmdir is another option for removing directories -- the default requires that the directory be empty.
 
-Wildcards and Regular Expressions
-Wildcards
+#### Wildcards
 Wildcards, such as * are used to identify multiple files or folders that match a requested pattern. * matches zero or more characters and is often used to grab groups of files. Navigate to the folder unix-folders-master/data/ and type ls. If we wanted to see what files ended in .out, we can use the wildcard *. For example, ls *.out will return any file name that ends in the pattern .out.
 
 Use * to list all files that end in .sh.
@@ -217,7 +237,7 @@ Use * to print all the measurements that contain the number 5.
 
 Use * to print all the measurements whose number starts with the number 5.
 
-Regular expressions
+#### Regular expressions
 Regular expressions (abbreviated regex) are a concept used in many different programming languages for sophisticated pattern matching. When used well, they can be a very powerful tool to help you find and transform your data and files.
 
 A regular expression is a sequence of characters used to define a search to match strings (think find and replace in Word). A ‘string’ is a contiguous sequence of symbols or values. For example, a word, a date, a set of numbers (e.g., a phone number), or an alphanumeric value (e.g., an identifier). The wildcard * we just learned about is taken from regular expressions, but there are many more features to the complete regular expressions syntax:
