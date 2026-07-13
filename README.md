@@ -12,6 +12,7 @@ This Github Repository was created for the General Programming class of the JP S
    * Introduction to HPC
    * Remote machine access (ssh) and log on to the HPC
    * Navigating the HPC using command line
+   * Transfering files and folders from your local computer to HPC
 3. Github
    * Setup Git on your local computer (or HPC)
    * Git commands - how to set up and work on a (collaborative) project
@@ -182,7 +183,7 @@ mv takes two arguments:
 Let's move `paper-v1.txt` into `old-drafts/`: 
 
 ```
-
+mv ./paper-v1.txt ./old-drafts/
 ```
 
 The command mv can also be used to rename files. Let's rename `paper-final2.txt` to `paper-DONE.txt`. To do this, your destination is the new name of the file.
@@ -198,136 +199,89 @@ mv can also be used with directories. For example, you can change the name of th
 mv paper-v4.txt paper-v3.txt
 ```
 Do you have the same number of files?
-
+**Excercise**
 Write a single command to move paper-v2.txt to the directory unix-folders-master/observations/ and rename it initial-observations. Now, navigate to unix-folders-master/observations/ and try copying paper-v3.txt to the location where you are without moving.
 
 #### Copying
-The command cp (copy) works very similarly to mv. As with mv it requires two commands (the target file you want to copy and the destination/name of the new file). Return to unix-folders-master/writing/drafts/. Let's try to create the files that we had previously by copying our final drafts.
-
+The command `cp` (copy) works very similarly to mv. As with mv it requires two arguments (the target file you want to copy and the destination/name of the new file). Let's try to create the files that we had previously by copying our final drafts.
+```
 cp paper-final.txt paper-v1.txt
 cp paper-final.txt paper-v2.txt
 cp paper-final.txt paper-v3.txt
-cp can also be used with directories. Try copying extremely-old-drafts to a new directory called very-old-drafts. What happened? Use man to figure out if there is a flag that can help you.
+```
+cp can also be used with directories. Try copying extremely-old-drafts to a new directory called very-old-drafts. What happened? For cp we need the flag `-r` to be able to copy directories including its contents. 
 
-#### Transfering files and folders from your local computer to HPC
-Navigate back to unix-folders-master/ and make a folder called creatures_dat. We are going to use the scp command to securely copy files and directories between remote hosts without starting an FTP session or logging into the remote systems explicitly. The scp command uses SSH to transfer data, so it requires a password or passphrase for authentication. Unlike rcp or FTP, scp encrypts both the file and any passwords exchanged so that anyone snooping on the network cannot view them. We are going to transfer all sequence files (ending in .dat) from your shell-lesson-data/exercise-data/creatures (should be in your Desktop) to your newly constructed folder creatures_dat
+#### Removing Things
+On the command line removal is permanent. Removing with the command `rm` just as cp and mv can take a target file or a list of more than file. So, for example rm paper-v1.txt removes paper-v1.txt. If you run ls again you will note that it is gone. And it is truly gone. Short of having backed things up-- there is no way to get a rm-ed file back. A flag that I like to add (or have aliased) is `rm -i` for interactive. Let's try `rm -i` to remove paper-v2.txt.
 
-Open a new local terminal
+The danger zone: You can also use rm to remove directories and this is where you really need to be careful. Using the flag `rm -r` will recursively remove *all files within a directory*. I strongly suggest (especially if you are new the the command line) using the -i flag. Note: `rmdir` is another option for removing directories -- the default requires that the directory be empty.
 
-scp /Users/maria/Desktop/shell-lesson-data/exercise-data/creatures/*dat mpachiadaki@poseidon.whoi.edu:/vortexfs1/omics/env-bio/users/mpachiadaki/unix-folders-master/creatures_dat
-To transfer a folder you use the flag -r scp -r origin destination
+#### Outputs & string commands things together
+The real power of shell comes from our ability to string commands together to do something greater.
 
-Removing things
-On the command line... removal is permanent. Removing with the command rm just as cp and mv can take a target file or a list of more than file. So, for example rm paper-v1.txt removes paper-v1.txt. If you run ls again you will note that it is gone. And it is truly gone. Short of having backed things up-- there is no way to get a rm-ed file back. A flag that I like to add (or have aliased) is rm -i for interactive. Let's try rm -i to remove paper-v2.txt.
+Navigate into the directory `data`. Type ls to familiarize yourself with what we are doing. Again let's use ls to look at the files. There are many data files that end in .out. Take a look at one of with less.
 
-The danger zone: You can also use rm to remove directories and this is where you really need to be careful. Using the flag rm -r will recursively remove all files within a directory. I strongly suggest (especially if you are new the the command line) using the -i flag. Note: rmdir is another option for removing directories -- the default requires that the directory be empty.
-
-#### Wildcards
-Wildcards, such as * are used to identify multiple files or folders that match a requested pattern. * matches zero or more characters and is often used to grab groups of files. Navigate to the folder unix-folders-master/data/ and type ls. If we wanted to see what files ended in .out, we can use the wildcard *. For example, ls *.out will return any file name that ends in the pattern .out.
-
-Use * to list all files that end in .sh.
-
-A note on usage: When the shell sees a wildcard, it expands the wildcard to create a list of matching filenames before running the command. If a wildcard expression does not match any file, Bash will pass the expression as an argument to the command as it is. For example typing ls *.pdf here will result in an error message that there is no file called *.pdf. Ultimately, it is the shell, not the other programs, that deals with expanding wildcards, and this is another example of orthogonal design.
-
-Navigate to unix-folders-master/measurements/. This folder contains a bunch of different measurement files. Use less to take a look at one of them.
-
-Use * to print all the measurements that end in the number 5.
-
-Use * to print all the measurements that contain the number 5.
-
-Use * to print all the measurements whose number starts with the number 5.
-
-#### Regular expressions
-Regular expressions (abbreviated regex) are a concept used in many different programming languages for sophisticated pattern matching. When used well, they can be a very powerful tool to help you find and transform your data and files.
-
-A regular expression is a sequence of characters used to define a search to match strings (think find and replace in Word). A ‘string’ is a contiguous sequence of symbols or values. For example, a word, a date, a set of numbers (e.g., a phone number), or an alphanumeric value (e.g., an identifier). The wildcard * we just learned about is taken from regular expressions, but there are many more features to the complete regular expressions syntax:
-
-Match on types of characters (e.g. upper case letters, digits, spaces, etc.).
-Match patterns that repeat any number of times
-Capture the parts of the original string that match your pattern
-Regular expressions look at both the actual charter and the literal characters and metacharacter. A metacharacter is any American Standard Code for Information Interchange (ASCII) character that has a special meaning. Using these together, you can construct a regex for finding strings or files that match a pattern rather than a specific string.
-
-Common regex metacharacters
-Square brackets define a list or range of characters to be found:
-
-[ABC] matches A or B or C.
-[A-Z] matches any upper case letter.
-[A-Za-z] matches any upper or lower case letter.
-[A-Za-z0-9] matches any upper or lower case letter or any digit. And then some special commands are :
-. matches any character
-\d matches digits
-\w matches any word character (i.e. not spaces)
-\s matches white space (space, tab new line etc.)
-\ is a general 'escape character' And then there are positional commands:
-^ means that the position must be at the start of the line
-$ means it must appear at the end of the line
-So, what is ^[Aa]naly.e going to match? (Practice more using regular expresions using the grep command below)
-
-If you are wanting to learn more about regex we recommend checking out:
-
-https://regexone.com/ : a great interactive online learning tool.
-https://regexr.com/ : a useful regex tester
-https://regexcrossword.com/ : for the regex fans who have too much time on their hands.
-Outputs & string commands things together
-Alright, so we can now navigate around file structures with the command line, make files and directories, copy things, remove things, rename things. Great! These are all things we could arguably do just as easily with your GUI interfaces. The real power of shell comes from our ability to string commands together to do something greater.
-
-Navigate into the directory data. Type ls to familiarize yourself with what we are doing. Again let's use ls to look at the files. There are many data files that end in .out. Take a look at one of with less.
-
-We are going to use a new command now called wc which counts the lines, words, and characters in a file.
+We are going to use a new command now called `wc` which counts the lines, words, and characters in a file.
 
 Run wc *out. This is printing information to standard out stdout. This is the default output from many programs-- it prints an answer for you on the command line. This answer, however, is not saved anywhere. Within command line we can actively redirect outputs to save it into a file or to pass the output into a new function. Let's check out what that looks like.
 
-Let's run wc -l *out (this only counts the lines for each of the files. We can now use the > to pass this output to a file. Let's make a file called lengths.
-
+Let's run `wc -l *out` (this only counts the lines for each of the files. We can now use the `>` to pass this output to a file. Let's make a file called lengths.
+```
 wc -l *out > lengths
+```
 What happened? Was anything printed to standard out?
 
-As an aside: > writes to a new file. It will overwrite anything present within a file. >> by contrast can be used to append to an existing file by adding the output to the end of an existing file.
+`>` writes to a new file. It will overwrite anything present within a file. `>>` by contrast can be used to *append* to an existing file by adding the output to the end of an existing file.
 
-What is more is you can actually pass out put to other programs. Let's introduce briefly a couple very useful programs for looking at and dealing with files:
+What is more is you can actually pass out to other programs. Let's introduce briefly a couple very useful programs for looking at and dealing with files:
 
-wc : counts the words in the file
-sort: sort the contents of a file
-uniq: returns only unique values from a file. Requires the file has been sorted
-head: returns the head (top) of the file
-tail : returns the tail (bottom) of the file
-cut: cuts a column of interest based on whatever the delimiter is
-paste: pastes columns together
-cat: in addition to printing a file to screen it can be used to concatenate files together
-Any other class favorites?
-These are some of my most used text handling functions that I use. All of them default to outputting to stdout and so can be easily piped together. [Note: sed, grep, and find are still to come-- they deserve their own special attention.]
+* `wc`: counts the words in the file
+* `sort`: sort the contents of a file
+* `uniq`: returns only unique values from a file. Requires the file has been sorted
+* `head`: returns the head (top) of the file
+* `tail` : returns the tail (bottom) of the file
+* `cut`: cuts a column of interest based on whatever the delimiter is
+* `paste`: pastes columns together
+* `cat`: in addition to printing a file to screen it can be used to concatenate files together
+
+These are some of my most used text handling functions that I use. All of them default to outputting to stdout and so can be easily piped together.
 
 So, let's try piping the output of wc -l into a new function. Let's try sort so that we can figure out what file has the most lines. To pass the output of one file to the next we use the pipe character| (located above the \ on American keyboards). So, we will pass the output of wc -l to sort -n to get a list of the files sorted based on the numeric value.
-
+```
 wc -l *out|sort -n
+```
 Now we are looking at a sorted list. We can then programmatically identify the shortest command by piping the output of the above to another command head -n 1 which will return only the first line of the input.
-
+```
 wc -l *out|sort -n|head -n 1
+```
 We can then even save this output to a file!
-
+```
 wc -l *out|sort -n|head -n 1 > shortest.file
+```
 You can see how these tools can be endlessly pieced together to do some really powerful manipulations!
 
-Exercise Break: Find a partner and try working through these exercises. You are working with the folder unix-folders-master/data/
+### Transfering files and folders from your local computer to HPC
+Navigate back to `mathreview2026`. We are going to use the `scp` command to securely copy files and directories between remote hosts without logging into the remote systems explicitly. The scp command uses SSH to transfer data, so it requires a password or passphrase for authentication. Unlike rcp or FTP, scp encrypts both the file and any passwords exchanged so that anyone snooping on the network cannot view them. We are going to transfer all our paper drafts (ending in `.txt`) from the HPC folder `papers` to a location on your computer.
 
-Retrieve the 25th value from lion.out
-What is the difference in function between sort and sort -n. Try sorting one of the .out files to figure it out.
-Write a command that will identify the index value ( number in the first column) that has the smallest value in the third column of hiztory.out . Return only the number in the first column and save the input to a file called small index. Hint: look at the man pages to find useful flags.
-Automation with for loops
+1. Open a new local terminal
+2. Use scp to copy. scp takes two arguments, your origin and your destination. Use pwd if you don't know where you are. To transfer a folder you use the flag -r scp -r origin destination
+```
+scp  fadime.stemmer@poseidon.whoi.edu:/vortexfs1/Users/fadime.stemmer/mathreview2026/papers/*.txt ~/Desktop/CHOOSE_YOUR_DESTIANTION_FOLDER/
+```
+3. Type in your password
+   
+Note: the '*' asterisk indicates a wildcard (any character). When the shell sees a wildcard, it expands the wildcard to create a list of matching filenames before running the command. If a wildcard expression does not match any file, Bash will pass the expression as an argument to the command as it is. For example typing ls *.pdf here will result in an error message that there is no file called *.pdf. Ultimately, it is the shell, not the other programs, that deals with expanding wildcards, and this is another example of orthogonal design.
+
+## 4. Writing scripts, slurm, sbatch
+### Automation with for loops
 Loops are a programming construct which allows us to perform a series of commands in the same way for each item in a list. Loops facilitate automation and save you time-- moreover loops reduce the amount of typing required (and mistakes made). So, if you ever find yourself thinking: gosh-- I want to do this one thing to all 10502395 of my files. You should think: for loop.
 
-Loops are common across programming languages. Today we will be writing one in bash but we will also learn how to write them in python later on. Regardless of the language the general format is the same:
-
-### PSEUDO CODE
-FOR item in LIST
-	DO_SOME_STUFF
-DONE
-In bash for loops look like this:
-
-for item in list
-do
-	DO_SOME_STUFF $item
+```
+for item in [list]
+	[command_to_do_stuff] $item
 done
+```
+
 When the shell sees the word for it knows that a loop is coming. It
 
 The $ in bash is used to designate variables. A variable name is a name whose value can be changed (rather than a text string or command that is static and cannot be changed. In a for loop the item in a list becomes a variable and changes as it moves through the loop.
