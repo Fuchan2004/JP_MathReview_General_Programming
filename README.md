@@ -483,9 +483,11 @@ srun -p scavenger -N 1 -n 1 --mem=10gb --time=02:00:00 --pty bash
 * `--time`: amount of time you request computing allocation for
 * `--pty bash`: run bash attached to a pseudo-terminal. Necessary to continue 
 
+Check your prompt - did anything change? 
+
 See all jobs that you or others are running on the HPC nodes using `squeue`. Use the flag `-u [your username]` to show your jobs
 ```
-squeue -u fadime.stemmer
+squeue -u [USERNAME]
 ```
 Cancel all your jobs using `scancel` 
 ```
