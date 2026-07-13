@@ -305,7 +305,7 @@ Navigate back to `JP_MathReview_General_Programming`. We are going to use the `s
 1. Open a new local terminal
 2. Use scp to copy. scp takes two arguments, your origin and your destination. Use pwd if you don't know where you are. To transfer a folder you use the flag -r scp -r origin destination
 ```
-scp  fadime.stemmer@poseidon.whoi.edu:/vortexfs1/home/fadime.stemmer/JP_MathReview_General_Programming/papers/*.txt ~/Desktop/CHOOSE_YOUR_DESTIANTION_FOLDER/
+scp  "fadime.stemmer@poseidon.whoi.edu:/vortexfs1/home/fadime.stemmer/JP_MathReview_General_Programming/papers/*.txt" ~/Desktop/CHOOSE_YOUR_DESTIANTION_FOLDER/
 ```
 3. Type in your password
    
