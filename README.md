@@ -34,11 +34,12 @@ echo "hello world"
 ### Test commands for navigating around our files via the command line
 
 <img width="690" height="362" alt="image" src="https://github.com/user-attachments/assets/2c2c641a-b293-4d58-b900-d2e0da75ecea" />
+
 This figure shows you the general structure of a command prompt in unix shell. A command has four parts: 
-* **The prompt**: indicates that the shell is waiting for input.
-* **The command**: indicates the action that you would like the computer to do.
-* **The options**: options are great ways to customize your commands. Each command has a set of options you can use. You can find resources online, use the command `man [ENTER COMMAND YOU NEED HELP WITH]` or use the option `--help` to explore options.
-* **The arguments**: indicate the file or folder that you would like the command to work on.
+* The **prompt**: indicates that the shell is waiting for input.
+* The **command**: indicates the action that you would like the computer to do.
+* The **options**: options are great ways to customize your commands. Each command has a set of options you can use. You can find resources online, use the command `man [ENTER COMMAND YOU NEED HELP WITH]` or use the option `--help` to explore options.
+* The **arguments**: indicate the file or folder that you would like the command to work on.
 
 Lets first check out which files are in our directory using the `ls` command. The option `-F` tells ls to classify the output by adding a marker to file and directory names to indicate what they are:
 * a trailing / indicates that this is a directory
