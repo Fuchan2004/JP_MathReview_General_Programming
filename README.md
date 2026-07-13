@@ -6,37 +6,85 @@ This Github Repository was created for the General Programming class of the JP S
 
 ## Goals
 1. The Unix Shell Intro
-   * Wildcards and regex
-   * Outputs & string commands together
-   * Writing scripts, slurm, sbatch
-2. Introduction to the HPC
    * Open the terminal on our local machine
-   * Test ocommands for navigating around our file structures via the command line
+   * Test commands for navigating around our files via the command line
+2. Introduction to the HPC
    * Introduction to HPC
    * Remote machine access (ssh) and log on to the HPC
+   * Navigating the HPC using command line
 3. Github
    * Setup Git on your local computer (or HPC)
    * Git commands - how to set up and work on a (collaborative) project
+4. Writing scripts, slurm, sbatch
+
+## 1. The Unix Shell Introduction
+### Open the terminal on your local machine
+* If you have a Mac computer, just open Terminal and test by typing:
+```
+echo "hello world"
+```
+* If you have a Windows computer open PowerShell as Administrator (right-click Start → "Terminal (Admin)" or search "PowerShell", right-click, Run as Administrator).
+	* 	Run `wsl --install`
+	* 	Restart your computer when prompted.
+	* 	After restart, open the new **Ubuntu** app from the Start menu, set a username/password when asked.
+	* 	Test by typing:
+```
+echo "hello world"
+```
+### Test commands for navigating around our files via the command line
+
+<img width="690" height="362" alt="image" src="https://github.com/user-attachments/assets/2c2c641a-b293-4d58-b900-d2e0da75ecea" />
+This figure shows you the general structure of a command prompt in unix shell. A command has four parts: 
+* **The prompt**: indicates that the shell is waiting for input.
+* **The command**: indicates the action that you would like the computer to do.
+* **The options**: options are great ways to customize your commands. Each command has a set of options you can use. You can find resources online, use the command `man [ENTER COMMAND YOU NEED HELP WITH]` or use the option `--help` to explore options.
+* **The arguments**: indicate the file or folder that you would like the command to work on.
+
+Lets first check out which files are in our directory using the `ls` command. The option `-F` tells ls to classify the output by adding a marker to file and directory names to indicate what they are:
+* a trailing / indicates that this is a directory
+* @ indicates a link
+* * indicates an executable
+
+```
+ls -F
+```
+
+Now let's check where you are on your computer! You can find out which directory you are currently in by using `pwd` which translates to "Print working directory".
+```
+pwd
+```
+Lets make a directory on your current working directory called `math_review_2026` using the command `mkdir`. Then list your working directory again. Can you find the directory we just created? 
+```
+mkdir math_review_2026
+```
+
+If you want to change the working directory, use the command `cd` which means change directory. 
+```
+cd math_review_2026
+```
+There are many more useful commands to learn and navigate in unix shell. I highly recommend [this software carpentries tutorial](https://swcarpentry.github.io/shell-novice/index.html) that walks you through basic operations, loops, writing scripts etc. in detail. 
 
 ## 2. Introduction to the HPC
 ### Logging on to the HPC
-This is a remote cluster of computers (it isn't really that remote.. it is in the basement of Clark). Nearly all command line systems (BASH etc.) have Secure Shell (ssh) natively installed. ssh is a cryptographic network protocol that allows you to provides a secure channel over an unsecured network. ssh can be used to log on to any number of platforms such as: remote computers (like a lab computer), computer clusters or high performance computers (HPCs), computers running in the cloud (e.g. AWS), etc.
+This is a remote cluster of computers (it isn't really that remote.. it is in the basement of Clark). Nearly all command line systems (BASH etc.) have Secure Shell (ssh) natively installed. ssh is a cryptographic network protocol that provides a secure channel over an unsecured network. ssh can be used to log on to any number of platforms such as: remote computers (like a lab computer), computer clusters or high performance computers (HPCs), computers running in the cloud (e.g. AWS), etc.
 
 Today we will be using ssh to log onto poseidon.whoi.edu. To do this you will need to know what your WHOI username is and be within WHOI's firewall either by connecting to the local network (e.g. eduroam) or by logging into WHOI's vpn.
 
 Once you are logged on to WHOI's network you should be ready to ssh. In your terminal prompt type the following:
-
+```
 ssh username@poseidon-l1.whoi.edu
+```
 If this is your first time logging onto the network you will see a prompt like the following:
 
 	Host key not found from the list of known hosts.
 	Are you sure you want to continue connecting (yes/no)? 
-This is a safety protocol ensuring that you do indeed want to add this address to a list of known hosts. Type yes.
+This is a safety protocol ensuring that you do indeed want to add this address to a list of known hosts. Type `yes`.
 
 You should now be prompted for your password (this will be your WHOI email password):
-
+```
 Host 'poseidon.whoi.edu' added to the list of known hosts.
       [usernames]'s password:
+```
 Once you type the correct password you should see something like the following:
 
 ```
@@ -54,67 +102,65 @@ jobs/processes on the login nodes will be terminated without notice.
 
 Congratulations! You have logged on to the HPC! This terminal now represents the environment of the remote computer that you just logged on to.
 
-Look at your prompt. Has it changed? What information do you see now? What do the different parts mean? Hint: try using the command whoami and the command hostname.
+Look at your prompt. Has it changed? What information do you see now? What do the different parts mean? 
+Hint: try using the command `whoami` and the command `hostname`.
 
-Navigating to our classroom directory
-For this class we have set up a special workspace on poseidon. This is where you will do all your homework and projects.
+### Navigating the HPC using command line
 
-Navigate to /vortexfs1/omics/env-bio. What folders do you see? Hint: if you are typing out the path provided rather than copying it, try hitting the tab key in the middle of the word or phrase, this should automatically complete the phrase for you or if there is more than one option repeatedly hitting tab will bring up a listing of all options.
+When you login to poseidon/hydra you will land in your personal directory. If you have not worked on the HPC before this folder should be empty. You can check that using the `ls` command.
+```
+ls 
+```
 
-You should see a folder within /vortexfs1/omics/env-bio/ called users/. This directory holds many subdirectories that we will be using in the class.
+Unlike your local computer where you have the option of unavigating through your computer's GUI file navigator (Finder or the like), on the HPC you DO NOT have access to any sort of GUI and you must do everything via the CLI. 
 
-Run ls users. What do you see?
+First, lets download a test folder from the class GitHub repository using the `wget` command. Then unzip the file. You can use the `unzip` command:
+```
+wget https://github.com/Fuchan2004/JP_MathReview_General_Programming/test.zip
+unzip test.zip
+```
+Lets list the contents of our test directory using the `ls` command. Alternatively you can use `ll` (for long list) or explore some flags. These I find useful:  `ls -ltrh`
+```
+ls test/
+ls -ltrh test/
+```
+What do you see?
 
-Now, navigate into your user directory. This will be your computational space for the rest of the class. Only you and the instructors have access to your directory.
+Tip: If you are typing out the path rather than copying it, try hitting the tab key in the middle of the word or phrase, this should automatically complete the phrase for you or if there is more than one option repeatedly hitting tab will bring up a listing of all options.
 
-Try navigating into someone else's directory. What happens? Why? Try ls -lh to figure it out.
-
-This is a nice example of how file permissions can be used to structure access to a file system. The letters you see next to the file indicate the permissions (read, write, execute) that are given to different groups from left to right (owner, group, all). You can actively use file permissions to protect original data (see Convert_code_to_script.pdf for more details)
-
-Getting ready!
-Now, if for some reason you have moved away, navigate back to your class user directory. Use ls to check the contents of the folder. Are there any files or folders?
-
-Get the class material from https://github.com/environmental-bioinformatics-master/unix-folders/archive/master.zip using the wget command:
-
-wget https://github.com/environmental-bioinformatics-master/unix-folders/archive/master.zip
-Check the contents of your folder and unzip the file. Unlike your local computer where you have the option of unzipping files through your computer's GUI file navigator (Finder or the like), on the HPC you DO NOT have access to any sort of GUI and you must do everything via the CLI. You can use the unzip command:
-
-unzip master.zip
-Working with files and directories
-Now, navigate into the newly created folder unix-folders-master/.
-
-How can you tell if a listing is a folder?
-
+### Working with files and directories
+Now, navigate **into** the newly created folder. You can do that using the `cd` command. How can you tell if a listing is a folder?
 Run the command to list the contents of the folder (ls with modifications maybe?). How many directories are there in this level?
 
-Creating directories
-Now, let's navigate back to unix-folders-master/. In this directory we are going to make a new directory called observations. Which command should we use?
+#### Creating directories
+Now, let's navigate back to. In this directory we are going to make a new directory called observations.
+```
+mkdir observations
+```
 
 Run ls -F again. What has changed since the first time? Try running ls -F observations. What do you see?
 
 Since we just made observations there is nothing inside of it-- let's change that!
 
-Creating a file
-Move into the directory observations and let's create a file. There are (unsurprisingly) many ways to do this. For now, let's use a text editor. During this class we will be using nano as it one of the easiest to learn. There are many other more powerful command line text editors (e.g. vim, emacs, etc.). If you are comfortable with one of those feel free to use it-- otherwise stick with nano.
+#### Creating a file
+Move into the directory observations and let's create a file. There are (unsurprisingly) many ways to do this. For now, let's use a text editor. During this class we will be using `nano` as it one of the easiest to learn. There are many other more powerful command line text editors (e.g. `vim`, `emacs`, etc.). If you are comfortable with one of those feel free to use it-- otherwise stick with nano.
 
-To create a new text file simply type nano [name of file], for example:
-
+To create a new text file simply type `nano [name of file]`. For example: 
+```
 nano 2023-observation.txt
+```
 This will create a new file called 2023-observation.txt and you should be automatically be entered into the nano environment. Add some text to the file. And then press ctrl+O. This will write the text to the output file. Once you are satisfied you can press ctrl+X to exit. Note that the bottom of the nano window lists other ctrl commands that you might want to use with the program.
 
-We just made a file with nano. Now investigate the command touch. Try typing touch 2023-observation_v2.txt. What happened? How is it different from nano? Try looking at its size.
+#### Looking at files (without editing them)
+Often we want to get a quick look at the contents of a file without potentially accidentally modifying it. For that, the command `less` is quite useful. Try typing less 2023-observation.txt. This should bring you into an interface where you can read and scroll but cannot edit the document. Type `q` to exit. Take a look at both files in this directory.
 
-Question for thought: If you make a text file does it need to end in .txt?
-
-Looking at files (without editing them)
-Often we want to get a quick look at the contents of a file without potentially accidentally modifying it. For that, the command less is quite useful. Try typing less 2023-observation.txt. This should bring you into an interface where you can read and scroll but cannot edit the document. Type q to exit. Take a look at both files in this directory.
-
-Another convenient way to examine the content of a file is to print it to the screen or print it to stdout or Standard Output. The program cat or concatenate will print the entire contents of a file to the screen. Try it out by typing:
-
-cat `2023-observations.txt`. 
+Another convenient way to examine the content of a file is to print it to the screen or print it to stdout or Standard Output. The program `cat` or concatenate will print the entire contents of a file to the screen. Try it out by typing:
+```
+cat `2023-observations.txt`
+```
 How is this different than less?
 
-Moving and renaming
+#### Moving and renaming
 One of the most common things you will likely find yourself doing is managing and reorganizing files in your projects. Let's go to the folder called unix-folders-master/writing/drafts/. Here we have many different versions of a paper that we are struggling to write.
 
 First, let's make a new directory called old-drafts. We are going to use the command mv (move) to move files on the command line. mv takes two arguments: the first is the target file that you want to move, the second is destination or the location that you want to move it to. Let's move paper-v1.txt into old-drafts/.
