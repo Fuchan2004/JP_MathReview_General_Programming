@@ -513,18 +513,25 @@ Navigate to `fasta/`. Let's pretend we wanted to retrieve the 10th value from `a
 ```
 for sequence in alteromonasmacleodii.fasta pseudomonasputida.fasta
 do
-	head -n 10 ${sequence} | tail -n 1
+	grep '>' ${sequence}| head -n 10 | tail -n 1
 done
 ```
-What if we wanted to save this out to a file? Modify this to create a file that has the output. This can be done in more than one way.
 
 *Note*: The shell prompt changes to > as we were typing in our loop. This indicates that the terminal is waiting for something to tell it that the command is finished. In this case done.
 
-`echo` is a very useful command-- it is effectively print and will report the value of any variable. For example, we just defined the variable file in the above for loop.
+`echo` is a very useful command-- it is effectively print and will report the value of any variable. For example, we just defined the variable `sequence` in the above `for loop`.
 ```
-echo file #prints the name file
-echo ${file} #prints the value of file
+for sequence in alteromonasmacleodii.fasta pseudomonasputida.fasta
+do
+	grep '>' ${sequence}| head -n 10 | tail -n 1
+	echo sequence #prints the name of the sequence
+	echo ${file} #prints the value of sequence variable
+done
+
 ```
+
+What if we wanted to save this out to a file? Modify the above sequence to create a file that has the output called `tenth_sequence.txt`.
+
 #### Writing bash scripts
 Ultimately, the thing that makes shell so powerful is your ability to save things you want to do more than once. Navigate into the `poseidon_codes` folder.
 
@@ -532,13 +539,13 @@ Here are some ready made scripts that we are going to take a look at. First type
 
 Let's take a look at `hello.sh`.
 
-As you can see it is pretty straight forward. This is a file that contains one command echo Hello, world.. To the screen.
+As you can see it is pretty straight forward. This is a file that contains one command `echo Hello, world.` to the screen.
 
 To execute a bash script, you can use the command `bash`.
 ```
 bash hello.sh
 ```
-This is nice-- but not really the most useful thing in the world. Let's edit this script to allow the user to pass an input to it. There are a series of special variables in shell `$1`, `$2`, etc. These variables correspond to order of the input following the name of the script. The variable `$@` refers to all the variables passed to the script.
+This is nice - but not really the most useful thing in the world. Let's edit this script to allow the user to pass an input to it. There are a series of special variables in shell `$1`, `$2`, etc. These variables correspond to order of the input following the name of the script. The variable `$@` refers to all the variables passed to the script.
 
 Let's change hello.sh so that it will say hello to whatever the input is. Use nano and change the input to:
 ```
