@@ -308,9 +308,10 @@ Navigate back to `JP_MathReview_General_Programming`. We are going to use the `s
 scp  "fadime.stemmer@poseidon.whoi.edu:/vortexfs1/home/fadime.stemmer/JP_MathReview_General_Programming/papers/*.txt" ~/Desktop/CHOOSE_YOUR_DESTIANTION_FOLDER/
 ```
 3. Type in your password
-   
-Note: the '*' asterisk indicates a wildcard (any character). When the shell sees a wildcard, it expands the wildcard to create a list of matching filenames before running the command. If a wildcard expression does not match any file, Bash will pass the expression as an argument to the command as it is. For example typing ls *.pdf here will result in an error message that there is no file called *.pdf. Ultimately, it is the shell, not the other programs, that deals with expanding wildcards, and this is another example of orthogonal design.
 
+If you want to copy something from your local computer to the HPC you just turn the origin and destination arguments around!
+   
+Note: the '*' asterisk indicates a wildcard (any character). When the shell sees a wildcard, it expands the wildcard to create a list of matching filenames before running the command. If a wildcard expression does not match any file, Bash will pass the expression as an argument to the command as it is. For example typing `ls *.pdf` here will result in an error message that there is no file called `*.pdf`. Ultimately, it is the shell, not the other programs, that deals with expanding wildcards.
 
 ## 3. Github
 ### What is Git / GitHub?
