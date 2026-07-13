@@ -223,29 +223,49 @@ cp -r extremely-old-drafts very-old-drafts
 Write a single command to move `paper-v2.txt` to the directory `JP_MathReview_General_Programming/observations/` and rename it `initial-observations.txt`. Now, navigate to `JP_MathReview_General_Programming/observations/` and try copying `paper-v3.txt` to the location where you are without moving directories.
 
 #### Removing Things
-On the command line removal is permanent. Removing with the command `rm` just as `cp` and `mv` can take a target file or a list of more than file. So, for example `rm paper-v1.txt` removes `paper-v1.txt`. If you run `ls` again you will note that it is gone. And it is truly gone. Short of having backed things up there is no way to get a rm-ed file back. A flag that I like to add (or have aliased) is `rm -i` for interactive. Let's try `rm -i` to remove `paper-v2.txt`.
+On the command line removal is permanent. Removing with the command `rm` just as `cp` and `mv` can take a target file or a list of more than file. So, for example:
+```
+`rm paper-v1.txt`
+```
+removes `paper-v1.txt`. If you run `ls` again you will note that it is gone. And it is truly gone. Short of having backed things up there is no way to get a rm-ed file back. A flag that I like to add (or have aliased) is `rm -i` for interactive. 
+
+Let's try `rm -i` to remove `paper-v2.txt`.
 ```
 rm -i paper-v2.txt
 ```
 
-The danger zone: You can also use `rm` to remove directories and this is where you really need to be careful. Using the flag `rm -r` will recursively remove *all files within a directory*. I strongly suggest (especially if you are new the the command line) using the `-i` flag. Note: `rmdir` is another option for removing directories the default requires that the directory be empty.
+You will be asked 
+```
+rm: remove regular file ‘paper-v2.txt’?
+```
+Type `y` if you want to remove it and `n` if you don't. It's an added layer of security just in case!
+
+*The danger zone*: You can also use `rm` to remove directories and this is where you really need to be careful. Using the flag `rm -r` will recursively remove *all files within a directory*. I strongly suggest (especially if you are new the the command line) using the `-i` flag. Note: `rmdir` is another option for removing directories the default requires that the directory be empty.
 
 #### Outputs & string commands things together
 The real power of shell comes from our ability to string commands together to do something greater.
 
-Navigate into the directory `data`. Type ls to familiarize yourself with what we are doing. Again let's use ls to look at the files. There are many data files that end in .out. Take a look at one of with less.
+Navigate into the directory `data`. Type `ls` to familiarize yourself with what we are doing. Again let's use `ls` to look at the files. There are many data files that end in `*.out`. Take a look at one of with `less`.
 
 We are going to use a new command now called `wc` which counts the lines, words, and characters in a file.
 
-Run wc *out. This is printing information to standard out stdout. This is the default output from many programs-- it prints an answer for you on the command line. This answer, however, is not saved anywhere. Within command line we can actively redirect outputs to save it into a file or to pass the output into a new function. Let's check out what that looks like.
+Run `wc *.out`. This is printing information to standard out stdout. This is the default output from many programs - it prints an answer for you on the command line. This answer is not saved anywhere. Within command line we can actively redirect outputs to save it into a file or to pass the output into a new function. Let's check out what that looks like.
 
-Let's run `wc -l *out` (this only counts the lines for each of the files. We can now use the `>` to pass this output to a file. Let's make a file called lengths.
+Let's run `wc -l *out` this only counts the lines for each of the files. We can now use the `>` to pass this output to a file. Let's make a file called lengths.
 ```
-wc -l *out > lengths
+wc -l *out > lengths.txt
 ```
 What happened? Was anything printed to standard out?
 
-`>` writes to a new file. It will overwrite anything present within a file. `>>` by contrast can be used to *append* to an existing file by adding the output to the end of an existing file.
+`>` writes to a new file. It will overwrite anything present within a file. So if you run a new command and write to `lengths.txt`, it will overwrite the previous output. 
+```
+wc *out > lengths.txt
+```
+
+`>>` by contrast can be used to *append* to an existing file by adding the output to the end of an existing file.
+```
+wc -l *out >> lengths.txt
+```
 
 What is more is you can actually pass out to other programs. Let's introduce briefly a couple very useful programs for looking at and dealing with files:
 
@@ -260,13 +280,13 @@ What is more is you can actually pass out to other programs. Let's introduce bri
 
 These are some of my most used text handling functions that I use. All of them default to outputting to stdout and so can be easily piped together.
 
-So, let's try piping the output of wc -l into a new function. Let's try sort so that we can figure out what file has the most lines. To pass the output of one file to the next we use the pipe character| (located above the \ on American keyboards). So, we will pass the output of wc -l to sort -n to get a list of the files sorted based on the numeric value.
+So, let's try piping the output of `wc -l` into a new function. Let's try sort so that we can figure out what file has the most lines. To pass the output of one file to the next we use the pipe character `|` (located above the \ on American keyboards). So, we will pass the output of `wc -l` to `sort -n` to get a list of the files sorted based on the numeric value.
 ```
-wc -l *out|sort -n
+wc -l *.out | sort -n
 ```
-Now we are looking at a sorted list. We can then programmatically identify the shortest command by piping the output of the above to another command head -n 1 which will return only the first line of the input.
+Now we are looking at a sorted list. We can then programmatically identify the shortest command by piping the output of the above to another command `head -n 1` which will return only the first line of the input.
 ```
-wc -l *out|sort -n|head -n 1
+wc -l *.out|sort -n|head -n 1
 ```
 We can then even save this output to a file!
 ```
