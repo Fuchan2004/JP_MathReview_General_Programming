@@ -513,7 +513,7 @@ Navigate to `fasta/`. Let's pretend we wanted to retrieve the 10th value from `a
 ```
 for sequence in alteromonasmacleodii.fasta pseudomonasputida.fasta
 do
-	head -n 10 ${file} | tail -n 1
+	head -n 10 ${sequence} | tail -n 1
 done
 ```
 What if we wanted to save this out to a file? Modify this to create a file that has the output. This can be done in more than one way.
