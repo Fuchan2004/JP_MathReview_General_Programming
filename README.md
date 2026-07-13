@@ -525,7 +525,7 @@ for sequence in alteromonasmacleodii.fasta pseudomonasputida.fasta
 do
 	grep '>' ${sequence}| head -n 10 | tail -n 1
 	echo sequence #prints the name of the sequence
-	echo ${file} #prints the value of sequence variable
+	echo ${sequence} #prints the value of sequence variable
 done
 
 ```
