@@ -225,7 +225,7 @@ Write a single command to move `paper-v2.txt` to the directory `JP_MathReview_Ge
 #### Removing Things
 On the command line removal is permanent. Removing with the command `rm` just as `cp` and `mv` can take a target file or a list of more than file. So, for example:
 ```
-`rm paper-v1.txt`
+rm paper-v1.txt
 ```
 removes `paper-v1.txt`. If you run `ls` again you will note that it is gone. And it is truly gone. Short of having backed things up there is no way to get a rm-ed file back. A flag that I like to add (or have aliased) is `rm -i` for interactive. 
 
