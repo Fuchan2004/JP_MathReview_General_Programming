@@ -7,6 +7,7 @@ This Github Repository was created for the General Programming class of the JP S
 ## Goals
 1. Github
    * Setup Git on your local computer (or HPC)
+   * Git commands - how to set up and work on a (collaborative) project
 3. Introduction to the HPC
    * Open the terminal on our local machine
    * Test ocommands for navigating around our file structures via the command line
@@ -78,8 +79,8 @@ Now, we are going to provide this public ssh key to GitHub. Go [here](https://gi
 ### Git commands - how to set up and work on a (collaborative) project
 Github is a great platform for working on code both individually or collaboratively. I usually create a repository for each project / paper I work on. To do that visit Github -> Repositories -> New. Select your settings (I recommend working in private mode and then setting to public once you're ready to publish) and click create. Congratualtions, you created your first github repository! 
 
-For now we will work with the JP Math Review repository. Lets copy it to our local computer using the command `git clone`. This is used to clone (or copy) repositories from GitHub to your local machine. Cloning is more than downloading as a zipped file as it will carry with it all the information and metadata that git needs to maintain version control. N
-1. avigate to the repository you'd like to clone, click the green <code> box, select SSH, and copy the link.
+For now we will work with the JP Math Review repository. Lets copy it to our local computer using the command `git clone`. This is used to clone (or copy) repositories from GitHub to your local machine. Cloning is more than downloading as a zipped file as it will carry with it all the information and metadata that git needs to maintain version control.
+1. Navigate to the repository you'd like to clone, click the green code box, select SSH, and copy the link.
 2. Switch back to your terminal window.
 3. Navigate to the directory you would like to copy this folder into.
 4. To clone we will type the command:
