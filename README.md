@@ -395,19 +395,29 @@ remote: Total 256 (delta 0), reused 256 (delta 0), pack-reused 0
 Receiving objects: 100% (256/256), 29.52 KiB | 0 bytes/s, done.
 ```
 
-If you now run `ls` you should see a new folder with the name of this repository. Go into this folder and type `ls -a`. The `-a` flag shows all files (including those that are hidden). Many programs create hidden files (files or folders that start with . to prevent users from messing with them).
+If you now run `ls` you should see a new folder with the name of this repository. Go into this folder and type 
+```
+ls -a
+```
 
-* You should see the README.md. The .md is markdown file which is a common and relatively easy to use formatting language. You can learn more about it [here](https://guides.github.com/features/mastering-markdown/).
-* You will also see a .git/ folder. This folder contains all the history associated with this repo. Basically, anything that has been committed to GitHub's memory is encoded within the .git/ folder.
+The `-a` flag shows all files (including those that are hidden). Many programs create hidden files (files or folders that start with `.` to prevent users from messing with them).
+
+* You should see the `README.md`. The `.md` is markdown file which is a common and relatively easy to use formatting language. You can learn more about it [here](https://guides.github.com/features/mastering-markdown/).
+* You will also see a `.git/` folder. This folder contains all the history associated with this repo. Basically, anything that has been committed to GitHub's memory is encoded within the `.git/` folder.
 
 After a git has been initiated (either via `git init` or `git clone`, as done here) you can start adding files to be tracked. First off, we have our local repo. Fundamentally, git does not automatically track any files. Files within your working directory are not being followed by git.
 
-Let's make a new file in our directory called temp. Using nano write something in temp, save and then quit out of nano.
+Let's make a new file in our directory called `temp`. Using nano write something in `temp`, save and then quit out of `nano`.
 
 <img width="2358" height="1493" alt="image" src="https://github.com/user-attachments/assets/dc7b145a-d982-47cc-a0e1-c2acbf86e019" />
 
-To check the status of what files are being followed we can use the command `git status`. This tells us what files are being followed, which aren't, and which have been changed. We can see at the bottom that temp is listed as a file that isn't being tracked. To tell git that you want it to follow a file and move it from the working directory to the staging area you use the command:
-```git add temp```
+To check the status of what files are being followed we can use the command 
+```git status```
+
+This tells us what files are being followed, which aren't, and which have been changed. We can see at the bottom that temp is listed as a file that isn't being tracked. To tell git that you want it to follow a file and move it from the working directory to the staging area you use the command:
+```
+git add temp
+```
 
 Now run `git status` again. What changed?
 
@@ -420,11 +430,11 @@ You will be prompted to enter a commit message. Type something in, then save and
 
 Type `git status` again and see what has changed.
 
-Now, what if we make a change to temp. Use nano to add some text to temp.
+Now, what if we make a change to `temp`. Use `nano` to add some text to `temp`.
 
 What happens when you type `git status`?
 
-As you can see it says that temp is tracked-- but it isn't staged staged. In order to stage the file you have to run `git add` and `git commit` again.
+As you can see it says that `temp` is tracked-- but it isn't staged staged. In order to stage the file you have to run `git add` and `git commit` again.
 
 Linking local Git to a remote (like GitHub)
 What if we now wanted to share our changes that we made on our local repo with a remote system like GitHub? There are three main ways of interacting with the remote:
@@ -434,18 +444,22 @@ What if we now wanted to share our changes that we made on our local repo with a
 
 We have all made some changes to our local repositories. Let's try pushing them to the remote. Generally, it is good practice (and can save you a lot of trouble such as losing files) to run `git pull` first just in case there have been any changes. This will help you avoid conflicts between the local and remote repository.
 
+```
+git pull
+```
+
 Run `git status`. You can see we are on our `main` branch. Main is the name of the remote repository. By convention, the local is typically called `origin`. So, to push our current commits to main we will type:
 
 ```
 git push origin main
 ```
 
-Go and take a look at your remote-- you should see that the file temp has been added to your online repository.
+Go and take a look at your remote - you should see that the file temp has been added to your online repository.
 
-A parting thought on Git
+**A parting thought on Git**
 Starting out with git can be a bit overwhelming at times. It is easy to mess up your repo or the like.
 
-Two common problems:
+*Two common problems*:
 - Accidentally adding files that are over the 100 MB size limit and trying to push them to GitHub.
 - Conflicting pushes: if you made any changes to your remote Git and forgot while trying to push your local. Thus, always try to pull and then push.
 And honestly, sometimes you just need to start over. Re-clone, move files around, pull and push. However, the simple fact that you can re-download a version of your project from the internet is very powerful!
