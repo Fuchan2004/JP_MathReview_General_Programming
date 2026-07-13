@@ -17,6 +17,9 @@ This Github Repository was created for the General Programming class of the JP S
    * Setup Git on your local computer (or HPC)
    * Git commands - how to set up and work on a (collaborative) project
 4. Writing scripts, slurm, sbatch
+   * Getting onto compute Nodes using srun
+   * Bash scripts
+   * Submitting jobs using slurm scripts and sbatch
 
 ## 1. The Unix Shell Introduction
 ### Open the terminal on your local machine
@@ -128,16 +131,19 @@ ls
 
 Unlike your local computer where you have the option of navigating through your computer's GUI file navigator (Finder or the like), on the HPC you DO NOT have access to any sort of GUI and you must do everything via the CLI. 
 
-First, lets create a folder called `mathreview2026` on the HPC. How do we do that? 
-Then navigate **into** the newly created folder. Download a test folder from the class GitHub repository using the `wget` command. Then unzip the file. You can use the `unzip` command:
+First, lets copy or clone the JP math review repository used in this course to the HPC: 
 ```
-wget https://github.com/Fuchan2004/JP_MathReview_General_Programming/papers.zip
+git clone https://github.com/Fuchan2004/JP_MathReview_General_Programming.git
+```
+List again, what do you see? 
+Navigate **into** the newly created folder and list the output. There should be a folder called papers.zip in our repo. You can use the `unzip` command to unzip it:
+```
 unzip papers.zip
 ```
-Lets list the contents of our test directory using the `ls` command. Alternatively you can use `ll` (for long list) or explore some flags. These I find useful:  `ls -ltrh`
+Lets list the contents of the papers directory using the `ls` command. Alternatively you can use `ll` (for long list) or explore some flags. These I find useful:  `ls -ltrh`
 ```
-ls test/
-ls -ltrh test/
+ls papers/
+ls -ltrh papers/
 ```
 What do you see?
 
@@ -145,7 +151,7 @@ Tip: If you are typing out the path rather than copying it, try hitting the tab 
 
 ### Working with files and directories
 #### Creating directories and files
-Now, let's navigate back to our `mathreview2026` folder. In this directory we are going to make a new directory called observations.
+Now, let's navigate back to our `JP_MathReview_General_Programming` folder. In this directory we are going to make a new directory called observations.
 ```
 mkdir observations
 ```
@@ -261,137 +267,16 @@ wc -l *out|sort -n|head -n 1 > shortest.file
 You can see how these tools can be endlessly pieced together to do some really powerful manipulations!
 
 ### Transfering files and folders from your local computer to HPC
-Navigate back to `mathreview2026`. We are going to use the `scp` command to securely copy files and directories between remote hosts without logging into the remote systems explicitly. The scp command uses SSH to transfer data, so it requires a password or passphrase for authentication. Unlike rcp or FTP, scp encrypts both the file and any passwords exchanged so that anyone snooping on the network cannot view them. We are going to transfer all our paper drafts (ending in `.txt`) from the HPC folder `papers` to a location on your computer.
+Navigate back to `JP_MathReview_General_Programming`. We are going to use the `scp` command to securely copy files and directories between remote hosts without logging into the remote systems explicitly. The scp command uses SSH to transfer data, so it requires a password or passphrase for authentication. Unlike rcp or FTP, scp encrypts both the file and any passwords exchanged so that anyone snooping on the network cannot view them. We are going to transfer all our paper drafts (ending in `.txt`) from the HPC folder `papers` to a location on your computer.
 
 1. Open a new local terminal
 2. Use scp to copy. scp takes two arguments, your origin and your destination. Use pwd if you don't know where you are. To transfer a folder you use the flag -r scp -r origin destination
 ```
-scp  fadime.stemmer@poseidon.whoi.edu:/vortexfs1/Users/fadime.stemmer/mathreview2026/papers/*.txt ~/Desktop/CHOOSE_YOUR_DESTIANTION_FOLDER/
+scp  fadime.stemmer@poseidon.whoi.edu:/vortexfs1/Users/fadime.stemmer/JP_MathReview_General_Programming/papers/*.txt ~/Desktop/CHOOSE_YOUR_DESTIANTION_FOLDER/
 ```
 3. Type in your password
    
 Note: the '*' asterisk indicates a wildcard (any character). When the shell sees a wildcard, it expands the wildcard to create a list of matching filenames before running the command. If a wildcard expression does not match any file, Bash will pass the expression as an argument to the command as it is. For example typing ls *.pdf here will result in an error message that there is no file called *.pdf. Ultimately, it is the shell, not the other programs, that deals with expanding wildcards, and this is another example of orthogonal design.
-
-## 4. Writing scripts, slurm, sbatch
-### Automation with for loops
-Loops are a programming construct which allows us to perform a series of commands in the same way for each item in a list. Loops facilitate automation and save you time-- moreover loops reduce the amount of typing required (and mistakes made). So, if you ever find yourself thinking: gosh-- I want to do this one thing to all 10502395 of my files. You should think: for loop.
-
-```
-for item in [list]
-	[command_to_do_stuff] $item
-done
-```
-
-When the shell sees the word for it knows that a loop is coming. It
-
-The $ in bash is used to designate variables. A variable name is a name whose value can be changed (rather than a text string or command that is static and cannot be changed. In a for loop the item in a list becomes a variable and changes as it moves through the loop.
-
-Navigate to data/. Let's pretend we wanted to retrieve the 25th value from lion.out and secret.out data files. If we tried to do this with our wildcard command and pipes it wouldn't work very well. We can encode this in a for loop.
-
-for file in lion.out secret.out
-do
-	head -n 25 ${file} | tail -n 1
-done 
-What if we wanted to save this out to a file? Modify this to create a file that has the output. This can be done in more than one way.
-
-Now let's say that we want actually copy each of our *out files. If we tried to do this with our wildcard command and pipes it wouldn't work very well. We can encode this in a for loop.
-
-Note: The shell prompt changes to > as we were typing in our loop. This indicates that the terminal is waiting for something to tell it that the command is finished. In this case done.
-
-echo is a very useful command-- it is effectively print and will report the value of any variable. For example, we just defined the variable file in the above for loop.
-
-If we now type:
-
-echo file #prints the name file
-echo ${file} #prints the value of file
-It will print the value of the variable ${file}.
-
-Variables are powerful because we can easily manipulate them to do things like find and replace values. Let's make a variable called santa and assign it the value hohoho.
-
-santa=hohoho
-echo ${santa}
-For example, if we wanted to change the letter o to an a we do this easily with string manipulations.
-
-echo ${santa//o/a}
-Now, what if you wanted to change the name of all the .out to .data. Write a for loop to do that.
-
-Repeat it with scripts
-Ultimately, the thing that makes shell so powerful is your ability to save things you want to do more than once. Navigate into the scripts folder.
-
-Here are some ready made scripts that we are going to take a look at. First type ls -l. You should see that all of these scripts are executable.
-
-Let's take a look at hello.sh.
-
-As you can see it is pretty straight forward. This is a file that contains one command echo Hello, world.. To the screen.
-
-To execute a bash script, you can use the command bash.
-
-bash hello.sh
-This is nice-- but not really the most useful thing in the world. Let's edit this script to allow the user to pass an input to it. There are a series of special variables in shell $1, $2, etc. These variables correspond to order of the input following the name of the script. The variable $@ refers to all the variables passed to the script.
-
-Let's change hello.sh so that it will say hello to whatever the input is. Use nano and change the input to:
-
-echo Hello $1! 
-We can now execute this by typing:
-
-bash hello.sh *your name*
-What is the output of the above?
-
-Edit hello.sh again to make it print a hello statement to two people. Note what happens when two inputs aren't provided.
-
-Now let's look at the script Harriet used to make all the fake data files we have been looking at. Use less to look at script.sh.
-
-#!/bin/bash
-for s in $(seq $1)
-do 
-        echo $s $RANDOM $RANDOM 
-done
-This script introduces a new useful command seq. seq will automatically generate a number line from any start position to any end position. The other new thing is the variable $RANDOM. What does this do?
-
-As you can see at the top of the file there is a funny string #!/bin/bash. This is called the shebang or bang. It is a common feature of shell scripts-- it tells the computer the path to the interpreter that should be used. This ensures that however you execute your script it will be interpreted with the correct interpreter (i.e. bash and csh ).
-
-Now, try running this script-- what do you think you would pass the script?
-
-Finding things
-Finding words in text files
-Global regular expression print grep is a command that lets you search for words or regular expressions within files. Navigate to unix-folders-master/writing/fables-poems and let's give it a try. We are going to search for the word Cat in the file LaFontaine.txt.
-
-grep Cat LaFontaine.txt
-As you can see this is printing all the lines that contain the word Cat within the file. Now try searching for cat. What is the difference? grep is a very powerful tool-- use man to take a look at its abilities. Can you figure out how to make it ignore case?
-
-You can also use grep regular expressions. To be safe it is good to append the flag -E to the command to force it to read the string passed as a regular expression.
-
-grep -E "nose|ring" lear.txt 
-Exercises Inside your unix-folders-master/measurements/ folder: Write a command that uses regex to list all files that contain a 5 or a 6 somewhere within their name.
-
-Write a command that lists all files that end in 3, 7 or 8.
-
-Write a command that returns all files that contain a 2 followed by a 1 or an 8.
-
-Find and replace?
-Often times you will have a file that you want to fix so that it doesn't contain certain character or the like. One option for finding and replacing things within a text file is the command sed.
-
-sed is a powerful tool and has had books written about it. Today, we are going to just cover the simplest functionality. Genearlly it takes the form 's/old_word/new_word/'. This will replace an old_word with new_word. Let's check this out. Navigate to: unix-folders-master/writing/fortunes.
-
-Let's try replacing a with A in this file.
-
-sed -e 's/a/A/' fortune5
-What happened?
-
-As you can see -- only the first occurrence of a was replaced. To replace all the instances of an occurring character in the text file you can add g after the search pattern.
-
-sed -e 's/a/A/g' fortune5
-Write a sed command to find and replace the letters a or s with !.
-
-Finding files
-Sometimes, even with the best organization skills you forget where you put things. While grep searches a particular file-- find is used to search your file system. Go back to unix-folders-master/.
-
-Try typing find .. This is going to to list all the files that exist at this level and below. But, of course, find is much more powerful than that. To find all the directories:
-
-find . -type d
-Find can also be used to find files that match a certain name:
-
-find . -name *.txt
 
 
 ## 3. Github
@@ -400,7 +285,7 @@ find . -name *.txt
 * Git is not an archival service
 * Git is not a good place to store data or data products (checkout Zenodo or OSF.io instead)
 
-### Set up Git on your computer (or the HPC)
+### Set up Git on your computer / the HPC
 First, we are going to share a public ssh key between your personal or HPC account and GitHub. 
 To do this navigate to ~/.ssh/ and get the contents of the public key file.
 
@@ -450,12 +335,12 @@ Finally, copy the ssh key to your clipboard, either by opening the id_rsa.pub fi
 pbcopy < ~/.ssh/id_rsa.pub
 ```
 
-Now, we are going to provide this public ssh key to GitHub. Go [here](https://github.com/settings/keys) and click on "Add new SSH key" on the top right of the page. Give the key a title that is informative for you and paste your key into the key box. Now click "Add SSH key" at the bottom and you should be good to go!
+Now, we are going to provide this public ssh key to GitHub. Go [here](https://github.com/settings/keys) and click on "Add new SSH key" on the top right of the page. Give the key a title that is informative for you (f.e. poseidon) and paste your key into the key box. Now click "Add SSH key" at the bottom and you should be good to go!
 
 ### Git commands - how to set up and work on a (collaborative) project
 Github is a great platform for working on code both individually or collaboratively. I usually create a repository for each project / paper I work on. To do that visit Github -> Repositories -> New. Select your settings (I recommend working in private mode and then setting to public once you're ready to publish) and click create. Congratualtions, you created your first github repository! 
 
-For now we will work with the JP Math Review repository. Lets copy it to our local computer using the command `git clone`. This is used to clone (or copy) repositories from GitHub to your local machine. Cloning is more than downloading as a zipped file as it will carry with it all the information and metadata that git needs to maintain version control.
+Lets copy it to our local computer using the command `git clone` as we did before with the math review repo. This is used to clone (or copy) repositories from GitHub to your local machine. Cloning is more than downloading as a zipped file as it will carry with it all the information and metadata that git needs to maintain version control.
 1. Navigate to the repository you'd like to clone, click the green code box, select SSH, and copy the link.
 2. Switch back to your terminal window.
 3. Navigate to the directory you would like to copy this folder into.
@@ -530,3 +415,133 @@ Two common problems:
 - Accidentally adding files that are over the 100 MB size limit and trying to push them to GitHub.
 - Conflicting pushes: if you made any changes to your remote Git and forgot while trying to push your local. Thus, always try to pull and then push.
 And honestly, sometimes you just need to start over. Re-clone, move files around, pull and push. However, the simple fact that you can re-download a version of your project from the internet is very powerful!
+
+
+## 4. Writing scripts, srun, slurm and sbatch
+### Getting onto compute Nodes using srun
+Once we use the ssh command to get onto poseidon, we are on the login Note, which is a shared computer. The login node provides a portal to larger computing space and can be used to navigate file structure. But not to be used for large computing. No heavy lifting bioinformatics on login node!
+
+We can get on a computing node using the command `srun [options]`. For example:
+```
+srun -p scavenger -N 1 -n 1 --mem=10gb --time=02:00:00 --pty bash
+```
+* `-p`: partition, can be
+   * `compute`: compute nodes are shared computing space.
+   * `scavenger`: can be used as long as the owner isn´t using it. Scavenges are purchased resources of others
+   * `bigmem`: used for memory intensive operations
+* `-N`: Number of nodes you need to use
+* `-n`: Number of tasks. How many copies of command are allowed to run on the requested resources (for paralellization). Number of cores available to each task are set separately (= cores)
+* `--mem`: amount of memory you need to run your scripts
+* `--time`: amount of time you request computing allocation for
+* `--pty bash`: run bash attached to a pseudo-terminal. Necessary to continue 
+
+See all jobs that you or others are running on the HPC nodes using `squeue`. Use the flag `-u [your username]` to show your jobs
+```
+squeue -u fadime.stemmer
+```
+Cancel all your jobs using `scancel` 
+```
+scancel -u [USERNAME]
+```
+or only specific runs: 
+```
+scancel [JOBID]
+```
+### Bash Scripts
+#### Automation with for loops
+Loops are a programming construct which allows us to perform a series of commands in the same way for each item in a list. Loops facilitate automation and save you time-- moreover loops reduce the amount of typing required (and mistakes made). So, if you ever find yourself thinking: gosh-- I want to do this one thing to all 10502395 of my files. You should think: for loop.
+
+```
+for item in [list]
+	[command_to_do_stuff] $item
+done
+```
+
+The `$` in bash is used to designate variables. A variable name is a name whose value can be changed (rather than a text string or command that is static and cannot be changed. In a for loop the item in a list becomes a variable and changes as it moves through the loop.
+
+Navigate to `fasta/`. Let's pretend we wanted to retrieve the 10th value from `ecoli.fasta` and `rpomeroyi.fasta` data files. If we tried to do this with our wildcard command and pipes it wouldn't work very well. We can encode this in a for loop.
+```
+for sequence in ecoli.fasta rpomeroyi.fasta
+do
+	head -n 10 ${file} | tail -n 1
+done
+```
+What if we wanted to save this out to a file? Modify this to create a file that has the output. This can be done in more than one way.
+
+*Note*: The shell prompt changes to > as we were typing in our loop. This indicates that the terminal is waiting for something to tell it that the command is finished. In this case done.
+
+`echo` is a very useful command-- it is effectively print and will report the value of any variable. For example, we just defined the variable file in the above for loop.
+```
+echo file #prints the name file
+echo ${file} #prints the value of file
+```
+#### Writing bash scripts
+Ultimately, the thing that makes shell so powerful is your ability to save things you want to do more than once. Navigate into the `poseidon_codes` folder.
+
+Here are some ready made scripts that we are going to take a look at. First type ls -l. You should see that all of these scripts are executable.
+
+Let's take a look at `hello.sh`.
+
+As you can see it is pretty straight forward. This is a file that contains one command echo Hello, world.. To the screen.
+
+To execute a bash script, you can use the command `bash`.
+```
+bash hello.sh
+```
+This is nice-- but not really the most useful thing in the world. Let's edit this script to allow the user to pass an input to it. There are a series of special variables in shell `$1`, `$2`, etc. These variables correspond to order of the input following the name of the script. The variable `$@` refers to all the variables passed to the script.
+
+Let's change hello.sh so that it will say hello to whatever the input is. Use nano and change the input to:
+```
+echo Hello $1!
+```
+We can now execute this by typing:
+```
+bash hello.sh [your name]
+```
+What is the output of the above?
+
+**Exercise**
+Lets create a new bash script in the scripts folder called `tenth_sequence.sh`. Copy the for loop from earlier that gave us the 10th sequence in a fasta file as output into the script. Modify it to output the 10th sequence from all `*.fasta` files in an input directory (should be $1). Run the script:
+
+```
+bash tenth_sequence.sh ../fasta/
+```
+
+### Submitting jobs using slurm scripts and sbatch
+In the `poseidon_codes` folder you will find two MATLAB scripts called `hello_world.m` and `Testplot_20260713.m`. We will submit these scripts and run them using a compute node without the bash interface using slurm. Slurm is the job scheduler used on the HPC. To run any job on the HPC, we have to submit it via slurm and wait in the queuing system. The nice thing about this is that the job will not be interrupted even if you lose connection to the HPC. 
+
+Here we will work with simple MATLAB codes. First we need to check preloaded modules on the HPC by typing `module list`. Then check the modules available to download on Poseidon by typing `module avail`. We need to load MATLAB. You can do that through: 
+
+```
+module load matlab
+``` 
+Once that is done, lets read and prepare our MATLAB codes with the `nano` text editor. Write anything you like behind the print statement
+```
+nano hello_world.m
+```
+Next lets explore job submission through slurm. You will have to write submission scripts to submit jobs with the extension `*.slurm`. Lets look at the slurm script in our folder `job.slurm`. The header in this file looks as follows: 
+```
+#!/bin/bash
+#SBATCH --partition=compute	     # specify the partition
+#SBATCH --job-name=matlab        # create a short name for your job
+#SBATCH --nodes=1                # node count
+#SBATCH --ntasks=1               # total number of tasks across all nodes
+#SBATCH --cpus-per-task=1        # cpu-cores per task (>1 if multi-threaded tasks)
+#SBATCH --mem-per-cpu=4G         # memory per cpu-core (4G per cpu-core is default)
+#SBATCH --time=00:10:00          # total run time limit (HH:MM:SS)
+#SBATCH --mail-type=all          # send email on job start, end and fault
+#SBATCH --mail-user=<username>@whoi.edu # email for receiving job status
+#SBATCH --output=<jobname_here>%j.log # creates a log file with the specified job name and number (%j)
+```
+We can submit our job to the compute node and all other specified sections using following command: 
+```
+sbatch job.slurm
+```
+Lets check the status of our job:
+```
+squeue -u <username>
+```
+
+**Exercise**
+Open the `Testplot_20260713.m`. Read it through, change the function and output filename to your desired filename. Save and exit the file.
+Open `job.slurm` and edit the command to run this matlab script. Save and exit. Then submit the job and check for the results. How can we get the output files onto our local computer? 
