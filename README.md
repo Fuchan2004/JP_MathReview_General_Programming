@@ -509,9 +509,9 @@ done
 
 The `$` in bash is used to designate variables. A variable name is a name whose value can be changed (rather than a text string or command that is static and cannot be changed. In a for loop the item in a list becomes a variable and changes as it moves through the loop.
 
-Navigate to `fasta/`. Let's pretend we wanted to retrieve the 10th value from `ecoli.fasta` and `rpomeroyi.fasta` data files. If we tried to do this with our wildcard command and pipes it wouldn't work very well. We can encode this in a for loop.
+Navigate to `fasta/`. Let's pretend we wanted to retrieve the 10th value from `alteromonasmacleodii.fasta` and `pseudomonasputida.fasta` data files. If we tried to do this with our wildcard command and pipes it wouldn't work very well. We can encode this in a for loop.
 ```
-for sequence in ecoli.fasta rpomeroyi.fasta
+for sequence in alteromonasmacleodii.fasta pseudomonasputida.fasta
 do
 	head -n 10 ${file} | tail -n 1
 done
