@@ -207,13 +207,13 @@ mv paper-v4.txt paper-v3.txt
 Do you have the same number of files?
 
 #### Copying
-The command `cp` (copy) works very similarly to mv. As with mv it requires two arguments (the target file you want to copy and the destination/name of the new file). Let's try to create the files that we had previously by copying our final drafts.
+The command `cp` (copy) works very similarly to mv. As with `mv` it requires two arguments (the target file you want to copy and the destination/name of the new file). Let's try to create the files that we had previously by copying our final drafts.
 ```
 cp paper-final.txt paper-v1.txt
 cp paper-final.txt paper-v2.txt
 cp paper-final.txt paper-v3.txt
 ```
-cp can also be used with directories. Try copying extremely-old-drafts to a new directory called very-old-drafts. What happened? For cp we need the flag `-r` to be able to copy directories including its contents. 
+`cp` can also be used with directories. Try copying `extremely-old-drafts` to a new directory called v`ery-old-drafts`. What happened? For `cp` we need the flag `-r` to be able to copy directories including its contents. 
 
 **Excercise**
 Write a single command to move `paper-v2.txt` to the directory `JP_MathReview_General_Programming/observations/` and rename it `initial-observations.txt`. Now, navigate to `JP_MathReview_General_Programming/observations/` and try copying `paper-v3.txt` to the location where you are without moving directories.
