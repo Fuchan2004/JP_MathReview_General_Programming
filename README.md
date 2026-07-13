@@ -85,7 +85,9 @@ For now we will work with the JP Math Review repository. Lets copy it to our loc
 3. Navigate to the directory you would like to copy this folder into.
 4. To clone we will type the command:
 
-```git clone [PASTE THE LINK YOU COPIED]```
+```
+git clone [PASTE THE LINK YOU COPIED]
+```
 
 5. You can then hit enter and you should see some printout like this:
 
@@ -131,10 +133,9 @@ As you can see it says that temp is tracked-- but it isn't staged staged. In ord
 
 Linking local Git to a remote (like GitHub)
 What if we now wanted to share our changes that we made on our local repo with a remote system like GitHub? There are three main ways of interacting with the remote:
-
-`git clone`: we already used this. This will copy a version of the repo to your local system.
-`git pull`: copies changes from a remote repository to a local repository.
-`git push`: copies changes from a local repository to a remote repository.
+* `git clone`: we already used this. This will copy a version of the repo to your local system.
+* `git pull`: copies changes from a remote repository to a local repository.
+* `git push`: copies changes from a local repository to a remote repository.
 
 We have all made some changes to our local repositories. Let's try pushing them to the remote. Generally, it is good practice (and can save you a lot of trouble such as losing files) to run `git pull` first just in case there have been any changes. This will help you avoid conflicts between the local and remote repository.
 
